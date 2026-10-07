@@ -1,0 +1,225 @@
+================================================================================
+  FREE FIRE LEVEL UP BOT (OB55) - UBUNTU 24.04 VPS DEPLOYMENT GUIDE
+================================================================================
+
+This guide walks you through setting up and running your Free Fire Level Up Bot
+on a fresh Ubuntu 24.04 LTS VPS with 24/7 background uptime, automatic reboot recovery,
+and firewall configuration.
+
+================================================================================
+STEP 1: CONNECT TO YOUR VPS & UPDATE PACKAGES
+================================================================================
+
+1. Open PowerShell or Terminal on your PC and connect to your VPS via SSH:
+   ssh root@<YOUR_VPS_IP>
+
+2. Update system packages and install Python 3, venv, and build tools:
+   sudo apt update && sudo apt upgrade -y
+   sudo apt install -y python3 python3-pip python3-venv python3-dev build-essential git ufw screen curl nano
+
+================================================================================
+STEP 2: UPLOAD BOT FILES TO YOUR VPS
+================================================================================
+
+Choose EITHER Method A (SCP from your PC) OR Method B (Zip transfer):
+
+--- METHOD A: Upload directly using SCP from your Windows PC ---
+Open PowerShell on your local Windows PC (in the bot folder) and run:
+scp -r "c:\Users\patel\Downloads\Telegram Desktop\FF AUTOMATIC LEVEL UP OB55 (2)" root@<YOUR_VPS_IP>:/root/ffbot
+
+--- METHOD B: If you prefer transferring a zip ---
+1. Zip the bot folder on Windows.
+2. In PowerShell:
+   scp "c:\path\to\bot.zip" root@<YOUR_VPS_IP>:/root/bot.zip
+3. On the VPS:
+   sudo apt install unzip -y
+   unzip /root/bot.zip -d /root/ffbot
+   cd /root/ffbot
+
+================================================================================
+STEP 3: SETUP PYTHON VIRTUAL ENVIRONMENT & DEPENDENCIES
+================================================================================
+
+* Note: Ubuntu 24.04 enforces PEP 668 (externally-managed-environment), so using
+  a virtual environment is mandatory and avoids polluting system packages.
+
+1. Navigate to the project directory:
+   cd /root/ffbot
+
+2. Create a virtual environment:
+   python3 -m venv venv
+
+3. Activate the virtual environment:
+   source venv/bin/activate
+
+4. Upgrade pip and install all required packages:
+   pip install --upgrade pip
+   pip install -r requirements.txt
+
+================================================================================
+STEP 4: CONFIGURE ENVIRONMENT VARIABLES (.env)
+================================================================================
+
+1. Create or edit the .env configuration:
+   nano .env
+
+2. Ensure your settings match your requirements:
+--------------------------------------------------------------------------------
+# Database: Leave empty for local JSON database, or paste MongoDB Atlas URI
+MONGO_URI=mongodb+srv://titanop24:titanop24@cluster0.7lvigzh.mongodb.net/?appName=Cluster0
+DB_NAME=levelup_system_db
+
+# Security & JWT
+JWT_SECRET=super_secret_cyber_levelup_key_2026_@#!OB55
+JWT_EXPIRATION_DAYS=15
+
+# Initial Admin Credentials
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=admin1234
+
+# Web Dashboard Port & Host
+WEB_PORT=20335
+WEB_HOST=0.0.0.0
+
+# Telegram & UPI Links
+UPI_ID=silentkiller@upi
+UPI_NAME=LEVEL UP SERVICE
+TELEGRAM_CHANNEL=https://t.me/SILENT_API
+TELEGRAM_GROUP=https://t.me/SILENTLIKEGROUP
+TELEGRAM_SUPPORT=https://t.me/SIL3NT_KILLER
+--------------------------------------------------------------------------------
+
+Press Ctrl + O then Enter to save, and Ctrl + X to exit nano.
+
+================================================================================
+STEP 5: CONFIGURE FIREWALL (UFW)
+================================================================================
+
+Allow SSH and the Web Dashboard port before enabling the firewall:
+
+sudo ufw allow 22/tcp
+sudo ufw allow 20335/tcp
+sudo ufw --force enable
+sudo ufw status
+
+* If your cloud provider (AWS, DigitalOcean, Oracle, Hetzner, Contabo, etc.)
+  has an external Cloud Security Group or Firewall, make sure to open inbound TCP
+  port 20335 in your cloud console dashboard as well.
+
+================================================================================
+STEP 6: RUNNING THE BOT (CHOOSE ONE METHOD)
+================================================================================
+
+--------------------------------------------------------------------------------
+OPTION 1: 24/7 SYSTEMD SERVICE (RECOMMENDED FOR PRODUCTION)
+--------------------------------------------------------------------------------
+This option ensures the bot automatically restarts if it crashes, starts on
+VPS reboot, and runs cleanly in the background.
+
+1. Create the systemd service file:
+   sudo nano /etc/systemd/system/ffbot.service
+
+2. Paste the following configuration:
+--------------------------------------------------------------------------------
+[Unit]
+Description=Free Fire Level Up Bot OB55 Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/ffbot
+ExecStart=/root/ffbot/venv/bin/python3 app.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
+--------------------------------------------------------------------------------
+Save (Ctrl+O, Enter) and exit (Ctrl+X).
+
+3. Reload systemd, enable the service on boot, and start it:
+   sudo systemctl daemon-reload
+   sudo systemctl enable ffbot
+   sudo systemctl start ffbot
+
+4. Check the service status:
+   sudo systemctl status ffbot
+
+5. View real-time live logs:
+   sudo journalctl -u ffbot -f
+
+--------------------------------------------------------------------------------
+OPTION 2: INTERACTIVE SCREEN SESSION (FOR TESTING / LIVE MONITORING)
+--------------------------------------------------------------------------------
+If you prefer seeing the console output directly in your terminal:
+
+1. Start a new screen session:
+   screen -S ffbot
+
+2. Activate virtual environment and run:
+   cd /root/ffbot
+   source venv/bin/activate
+   python3 app.py
+
+3. To detach from the screen (keep it running in background):
+   Press: Ctrl + A, then press D
+
+4. To re-attach to the screen later:
+   screen -r ffbot
+
+================================================================================
+STEP 7: ACCESSING THE WEB DASHBOARD
+================================================================================
+
+Open your web browser and navigate to:
+http://<YOUR_VPS_IP>:20335
+
+Login with your admin credentials:
+- Username: admin
+- Password: admin1234 (or whatever you set in .env)
+
+All features are now active:
+- Concurrent multi-account management
+- Automatic match detection and 10-minute idle match search timeout watchdog
+- EXP tracking and real-time logs stream
+- Online payment plans & Telegram user management
+
+================================================================================
+STEP 8: USEFUL MANAGEMENT COMMANDS
+================================================================================
+
+- Restart bot:
+  sudo systemctl restart ffbot
+
+- Stop bot:
+  sudo systemctl stop ffbot
+
+- Start bot:
+  sudo systemctl start ffbot
+
+- Check live logs:
+  sudo journalctl -u ffbot -f -n 100
+
+- Edit accounts manually:
+  nano /root/ffbot/accounts.json
+
+================================================================================
+AUTOMATIC INDIAN PROXY SCRAPING (OB55 VPS REGIONAL BYPASS)
+================================================================================
+- When running on a VPS hosted outside India (US, Europe, Singapore, etc.), Garena
+  blocks BD and IND accounts with HTTP 400 'BR_FFI_BLOCKED_NOT_IND_REGION_LOGIN'.
+- The bot includes an automated Indian Proxy Manager (`proxy_manager.py`):
+  * Automatically scrapes live Indian & BD HTTP proxies from Proxyscrape, Geonode,
+    and curated fresh GitHub proxy pools.
+  * Validates them concurrently with fast timeouts.
+  * Caches verified working Indian proxies in `ind_proxies_cache.json`.
+  * If GetLoginData or MajorLogin encounters the regional block on VPS, it
+    instantly rotates through verified Indian proxies to complete the login.
+  * (Optional) If you have a private Indian proxy, you can also set `FF_PROXY=http://user:pass@ip:port`
+    in `.env`, and the bot will use it as primary with auto-scraping as backup.
+================================================================================
+

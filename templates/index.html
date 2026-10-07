@@ -1,0 +1,4676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#070913">
+<title>LEVEL UP | Ultra Bot Engine & Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+/* ==================== CYBERPUNK DARK GLASS DESIGN SYSTEM ==================== */
+:root {
+  --bg-deep: #060811;
+  --bg-surface: #0b0f1d;
+  --bg-glass: rgba(14, 20, 38, 0.72);
+  --bg-glass-card: rgba(16, 23, 44, 0.65);
+  --bg-glass-card-hover: rgba(22, 32, 60, 0.85);
+  --bg-glass-active: rgba(26, 38, 70, 0.95);
+  
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-neon-cyan: rgba(0, 242, 254, 0.35);
+  --border-neon-purple: rgba(127, 0, 255, 0.35);
+  --border-glow: rgba(0, 242, 254, 0.2);
+
+  --accent-cyan: #00f2fe;
+  --accent-blue: #4facfe;
+  --accent-purple: #8a2be2;
+  --accent-violet: #7f00ff;
+  --accent-magenta: #ff007f;
+  --accent-pink: #ff2d95;
+  --accent-green: #00ffa3;
+  --accent-amber: #ffb800;
+  --accent-red: #ff3366;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-highlight: #00f2fe;
+
+  --grad-cyan-blue: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  --grad-purple-pink: linear-gradient(135deg, #7f00ff 0%, #ff2d95 100%);
+  --grad-sunset: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+  --grad-emerald: linear-gradient(135deg, #00ffa3 0%, #00b4d8 100%);
+  --grad-card-border: linear-gradient(135deg, rgba(0,242,254,0.3), rgba(127,0,255,0.15), rgba(255,45,149,0.2));
+
+  --glow-cyan: 0 0 25px rgba(0, 242, 254, 0.25);
+  --glow-purple: 0 0 25px rgba(127, 0, 255, 0.25);
+  --glow-pink: 0 0 25px rgba(255, 45, 149, 0.25);
+
+  --radius-xl: 18px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  font-family: var(--font-body);
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(127, 0, 255, 0.14) 0%, transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(0, 242, 254, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(255, 45, 149, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #060811 0%, #090e1f 100%);
+  background-attachment: fixed;
+  padding-bottom: 90px; /* space for mobile bottom nav */
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 16px;
+}
+
+/* ==================== TOP NAVIGATION HEADER ==================== */
+header.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  margin-bottom: 16px;
+  position: sticky;
+  top: 10px;
+  z-index: 100;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.brand-logo-gem {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--grad-cyan-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  color: #050811;
+  box-shadow: var(--glow-cyan);
+  position: relative;
+  overflow: hidden;
+}
+.brand-logo-gem::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.6) 50%, transparent 60%);
+  animation: shine 4s infinite;
+}
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  25%, 100% { transform: translateX(100%); }
+}
+
+.brand-info h1 {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #ffffff 0%, #00f2fe 70%, #8a2be2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.brand-info .tagline {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-badge-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  padding: 5px 12px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.user-badge-pill .user-avatar-mini {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--grad-purple-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+.user-badge-pill .plan-tag {
+  background: rgba(0, 242, 254, 0.15);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.user-badge-pill .plan-tag.admin {
+  background: rgba(255, 45, 149, 0.2);
+  color: var(--accent-pink);
+  border-color: rgba(255, 45, 149, 0.4);
+}
+
+.btn-header {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 7px 12px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.btn-header:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  border-color: var(--border-neon-cyan);
+}
+.btn-header.danger {
+  color: #ff5b79;
+}
+.btn-header.danger:hover {
+  background: rgba(255, 51, 102, 0.15);
+  border-color: rgba(255, 51, 102, 0.4);
+}
+.btn-header.admin-btn {
+  background: linear-gradient(135deg, rgba(127, 0, 255, 0.2), rgba(255, 45, 149, 0.2));
+  border-color: rgba(255, 45, 149, 0.4);
+  color: #ff9ecf;
+}
+.btn-header.admin-btn:hover {
+  box-shadow: 0 0 15px rgba(255, 45, 149, 0.4);
+}
+
+/* ==================== DESKTOP TABS (HIDDEN ON MOBILE) ==================== */
+.desktop-nav {
+  display: none;
+  align-items: center;
+  gap: 6px;
+}
+@media (min-width: 768px) {
+  .desktop-nav { display: flex; }
+}
+
+.nav-tab-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.2s ease;
+}
+.nav-tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+.nav-tab-btn.active {
+  color: #030712;
+  background: var(--grad-cyan-blue);
+  box-shadow: var(--glow-cyan);
+  font-weight: 700;
+}
+
+/* ==================== MOBILE BOTTOM NAVIGATION ==================== */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 24px);
+  max-width: 480px;
+  background: rgba(11, 15, 29, 0.92);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 6px 8px;
+  z-index: 1000;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+@media (min-width: 768px) {
+  .mobile-bottom-nav { display: none; }
+  body { padding-bottom: 30px; }
+}
+
+.bnav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 0;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  border-radius: 18px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: var(--font-heading);
+}
+.bnav-item i {
+  font-size: 16px;
+  transition: transform 0.25s ease;
+}
+.bnav-item.active {
+  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.1);
+}
+.bnav-item.active i {
+  transform: scale(1.15) translateY(-2px);
+  filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.6));
+}
+
+/* ==================== NOTIFICATION TOAST ==================== */
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 380px;
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  background: rgba(14, 20, 38, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: slideInRight 0.3s ease forwards;
+}
+.toast.success { border-left: 4px solid var(--accent-green); }
+.toast.error { border-left: 4px solid var(--accent-red); }
+.toast.info { border-left: 4px solid var(--accent-cyan); }
+.toast.warning { border-left: 4px solid var(--accent-amber); }
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ==================== HERO SLOTS & STATUS BANNER ==================== */
+.hero-slots-card {
+  background: linear-gradient(135deg, rgba(16, 25, 52, 0.8) 0%, rgba(11, 16, 33, 0.85) 100%);
+  border: 1px solid rgba(0, 242, 254, 0.18);
+  border-radius: var(--radius-xl);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+.hero-slots-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 250px; height: 100%;
+  background: radial-gradient(circle at right, rgba(0, 242, 254, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-slots-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.slot-visual {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.slot-number-box {
+  font-family: var(--font-heading);
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1;
+  background: var(--grad-cyan-blue);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: var(--glow-cyan);
+}
+.slot-meta h2 {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+.slot-meta p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+.hero-plan-time-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 242, 254, 0.1);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  margin-top: 6px;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
+}
+.hero-plan-time-pill.expired {
+  background: rgba(255, 0, 85, 0.12);
+  border-color: rgba(255, 0, 85, 0.35);
+  color: #ff3366;
+  box-shadow: 0 0 10px rgba(255, 0, 85, 0.2);
+}
+.hero-plan-time-pill.admin {
+  background: rgba(184, 75, 255, 0.15);
+  border-color: rgba(184, 75, 255, 0.4);
+  color: #c77dff;
+  box-shadow: 0 0 10px rgba(184, 75, 255, 0.25);
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-cyber-primary {
+  background: var(--grad-cyan-blue);
+  color: #040813;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px 18px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--glow-cyan);
+  transition: all 0.25s ease;
+}
+.btn-cyber-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 242, 254, 0.45);
+}
+
+.btn-cyber-outline {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+.btn-cyber-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-neon-cyan);
+}
+
+/* ==================== 6 STATS METRIC GRID ==================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+@media (min-width: 640px) {
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1024px) {
+  .stats-grid { grid-template-columns: repeat(6, 1fr); }
+}
+
+.stat-box {
+  background: var(--bg-glass-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  backdrop-filter: blur(16px);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.stat-box:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--bg-glass-card-hover);
+}
+.stat-box::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  opacity: 0.8;
+}
+.stat-box.cyan::after { background: var(--accent-cyan); }
+.stat-box.purple::after { background: var(--accent-purple); }
+.stat-box.green::after { background: var(--accent-green); }
+.stat-box.pink::after { background: var(--accent-pink); }
+.stat-box.amber::after { background: var(--accent-amber); }
+.stat-box.blue::after { background: var(--accent-blue); }
+
+.stat-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+.stat-box.cyan .stat-value { color: var(--accent-cyan); }
+.stat-box.purple .stat-value { color: #c084fc; }
+.stat-box.green .stat-value { color: var(--accent-green); }
+.stat-box.pink .stat-value { color: var(--accent-pink); }
+.stat-box.amber .stat-value { color: var(--accent-amber); }
+.stat-box.blue .stat-value { color: var(--accent-blue); }
+
+/* ==================== ACCOUNT COMMAND SECTION ==================== */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.badge-count {
+  background: rgba(0, 242, 254, 0.15);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.account-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.account-card {
+  background: var(--bg-glass-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 16px;
+  backdrop-filter: blur(20px);
+  position: relative;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+.account-card:hover {
+  border-color: var(--border-neon-cyan);
+  box-shadow: 0 8px 30px rgba(0, 242, 254, 0.12);
+}
+
+.card-top-badges {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pill-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.badge-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  padding: 3px 9px;
+  border-radius: 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.badge-pill.status-online {
+  background: rgba(0, 255, 163, 0.12);
+  border-color: rgba(0, 255, 163, 0.35);
+  color: var(--accent-green);
+}
+.badge-pill.status-match {
+  background: rgba(0, 242, 254, 0.15);
+  border-color: rgba(0, 242, 254, 0.4);
+  color: var(--accent-cyan);
+}
+.pulse-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+  animation: pulse-dot 1.5s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+
+.player-main-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.player-avatar-box {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+.player-info-meta {
+  flex: 1;
+  min-width: 0;
+}
+.player-nickname-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.player-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player-lvl-pill {
+  background: rgba(0, 242, 254, 0.12);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 10px;
+}
+.player-uid-sub {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.copy-uid-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 11px;
+  transition: color 0.15s ease;
+}
+.copy-uid-btn:hover { color: var(--accent-cyan); }
+
+/* Progress Bar */
+.level-progress-wrapper {
+  margin-bottom: 14px;
+}
+.progress-meta-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: var(--text-secondary);
+}
+.progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--grad-cyan-blue);
+  border-radius: 10px;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+}
+
+/* 3-column EXP Subgrid */
+.exp-stats-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  margin-bottom: 12px;
+}
+.exp-col {
+  text-align: center;
+}
+.exp-col-title {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+.exp-col-val {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.exp-col-val.gain {
+  color: var(--accent-green);
+}
+
+/* Card Action Buttons */
+.card-bottom-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+.last-updated-text {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+.card-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-card-action {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+.btn-card-action:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  border-color: var(--border-neon-cyan);
+}
+.btn-card-action.danger {
+  color: #ff5b79;
+}
+.btn-card-action.danger:hover {
+  background: rgba(255, 51, 102, 0.18);
+  border-color: rgba(255, 51, 102, 0.4);
+}
+
+/* ==================== EMPTY STATE ==================== */
+.empty-state-box {
+  background: var(--bg-glass-card);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-xl);
+  padding: 40px 20px;
+  text-align: center;
+}
+.empty-state-icon {
+  font-size: 42px;
+  color: var(--accent-cyan);
+  opacity: 0.6;
+  margin-bottom: 12px;
+}
+.empty-state-box h3 {
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.empty-state-box p {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 380px;
+  margin: 0 auto 16px;
+}
+
+/* ==================== BOT LIVE LOG STREAM ==================== */
+.console-wrapper {
+  background: #04060c;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.console-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #080d19;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+}
+.tdot { width: 10px; height: 10px; border-radius: 50%; }
+.tdot.red { background: #ff5f56; }
+.tdot.yellow { background: #ffbd2e; }
+.tdot.green { background: #27c93f; }
+
+.console-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.console-filter-group {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.console-filter-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+.console-filter-btn:hover {
+  border-color: var(--accent-cyan);
+  color: #ffffff;
+}
+.console-filter-btn.active {
+  background: var(--grad-cyan-blue);
+  color: #060811;
+  border-color: transparent;
+  font-weight: 700;
+}
+.console-logs-feed {
+  padding: 12px 14px;
+  max-height: 220px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.log-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.log-time { color: var(--text-muted); }
+.log-msg.info { color: #38bdf8; }
+.log-msg.success { color: var(--accent-green); }
+.log-msg.warning { color: var(--accent-amber); }
+.log-msg.error { color: var(--accent-red); }
+
+/* ==================== TAB VIEW: BUY PLANS ==================== */
+.plans-header-hero {
+  text-align: center;
+  padding: 24px 10px 20px;
+}
+.plans-header-hero .badge-glow-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(127, 0, 255, 0.15);
+  border: 1px solid rgba(127, 0, 255, 0.4);
+  color: #c084fc;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.plans-header-hero h2 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #ffffff 0%, #00f2fe 60%, #ff2d95 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+}
+.plans-header-hero p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.currency-toggle-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 24px;
+}
+.currency-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: 30px;
+  padding: 3px;
+  display: flex;
+}
+.currency-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.currency-btn.active {
+  background: var(--grad-cyan-blue);
+  color: #050811;
+}
+
+.plans-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+@media (min-width: 680px) {
+  .plans-cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .plans-cards-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.plan-card {
+  background: var(--bg-glass-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 22px;
+  backdrop-filter: blur(24px);
+  position: relative;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.plan-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-neon-cyan);
+  box-shadow: 0 10px 35px rgba(0, 242, 254, 0.15);
+}
+.plan-card.popular {
+  border-color: rgba(255, 45, 149, 0.5);
+  box-shadow: 0 8px 30px rgba(255, 45, 149, 0.18);
+}
+.plan-badge-float {
+  position: absolute;
+  top: 14px; right: 14px;
+  background: var(--grad-purple-pink);
+  color: #ffffff;
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.plan-icon-bolt {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(0, 242, 254, 0.1);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  color: var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-bottom: 14px;
+}
+.plan-card.popular .plan-icon-bolt {
+  background: rgba(255, 45, 149, 0.15);
+  border-color: rgba(255, 45, 149, 0.35);
+  color: var(--accent-pink);
+}
+
+.plan-title-box h3 {
+  font-family: var(--font-heading);
+  font-size: 19px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.plan-title-box p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.plan-pricing-box {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.plan-price-main {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.plan-price-secondary {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.plan-features-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.plan-features-list li {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.plan-features-list li i {
+  color: var(--accent-green);
+  font-size: 13px;
+}
+
+.btn-buy-plan {
+  width: 100%;
+  background: var(--grad-cyan-blue);
+  color: #030712;
+  font-family: var(--font-heading);
+  font-size: 13.5px;
+  font-weight: 800;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+}
+.btn-buy-plan:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 242, 254, 0.4);
+}
+.plan-card.popular .btn-buy-plan {
+  background: var(--grad-purple-pink);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 45, 149, 0.3);
+}
+
+/* ==================== TAB VIEW: HISTORY ==================== */
+.history-subnav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 10px;
+}
+.subnav-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.subnav-btn.active {
+  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.1);
+}
+
+.history-card {
+  background: var(--bg-glass-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.hcard-left h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.hcard-left p {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  margin-top: 2px;
+}
+.status-pill-order {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.status-pill-order.pending {
+  background: rgba(255, 184, 0, 0.15);
+  border: 1px solid rgba(255, 184, 0, 0.35);
+  color: var(--accent-amber);
+}
+.status-pill-order.approved {
+  background: rgba(0, 255, 163, 0.15);
+  border: 1px solid rgba(0, 255, 163, 0.35);
+  color: var(--accent-green);
+}
+.status-pill-order.rejected {
+  background: rgba(255, 51, 102, 0.15);
+  border: 1px solid rgba(255, 51, 102, 0.35);
+  color: var(--accent-red);
+}
+
+/* ==================== TAB VIEW: CONTACT ==================== */
+.contact-hero {
+  text-align: center;
+  padding: 24px 10px 20px;
+}
+.contact-hero h2 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  font-weight: 900;
+  background: var(--grad-cyan-blue);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+}
+.contact-hero p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.contact-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+.contact-channel-card {
+  background: var(--bg-glass-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.25s ease;
+}
+.contact-channel-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-neon-cyan);
+  background: var(--bg-glass-card-hover);
+  box-shadow: 0 8px 30px rgba(0, 242, 254, 0.15);
+}
+.cchannel-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  color: var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.cchannel-info {
+  flex: 1;
+  margin-left: 14px;
+}
+.cchannel-info h4 {
+  font-size: 15px;
+  font-weight: 700;
+}
+.cchannel-info p {
+  font-size: 12px;
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+  margin-top: 2px;
+}
+.cchannel-arrow {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ==================== TAB VIEW: ADMIN PANEL ==================== */
+.admin-badge-ribbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(255, 45, 149, 0.2), rgba(127, 0, 255, 0.2));
+  border: 1px solid rgba(255, 45, 149, 0.4);
+  color: #ff9ecf;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.admin-subnav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+.admin-tab-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.admin-tab-btn.active {
+  background: var(--grad-purple-pink);
+  color: #ffffff;
+  border-color: transparent;
+  font-weight: 700;
+}
+
+.filter-toggle-group {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.filter-btn:hover {
+  border-color: var(--accent-cyan);
+  color: #ffffff;
+}
+.filter-btn.active {
+  background: var(--grad-cyan-blue);
+  color: #060811;
+  border-color: transparent;
+  font-weight: 700;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--bg-glass-card);
+  margin-bottom: 24px;
+}
+table.cyber-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+table.cyber-table th {
+  background: rgba(255, 255, 255, 0.04);
+  text-align: left;
+  padding: 12px 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-size: 10.5px;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+table.cyber-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+table.cyber-table tr:hover td {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.btn-action-small {
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+.btn-action-small.approve {
+  background: rgba(0, 255, 163, 0.15);
+  border: 1px solid rgba(0, 255, 163, 0.4);
+  color: var(--accent-green);
+}
+.btn-action-small.approve:hover {
+  background: var(--accent-green);
+  color: #030712;
+}
+.btn-action-small.reject {
+  background: rgba(255, 51, 102, 0.15);
+  border: 1px solid rgba(255, 51, 102, 0.4);
+  color: var(--accent-red);
+}
+.btn-action-small.reject:hover {
+  background: var(--accent-red);
+  color: #ffffff;
+}
+
+/* ==================== AUTH VIEW (MODAL / OVERLAY) ==================== */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 7, 16, 0.88);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.auth-box {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(14, 20, 38, 0.95);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  border-radius: var(--radius-xl);
+  padding: 28px 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), var(--glow-cyan);
+  position: relative;
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.auth-logo-badge {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  background: var(--grad-cyan-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #030712;
+  margin: 0 auto 12px;
+  box-shadow: var(--glow-cyan);
+}
+.auth-header h2 {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.auth-header p {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.auth-engine-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(0, 242, 254, 0.1);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  color: var(--accent-cyan);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-top: 8px;
+}
+
+.auth-tab-switch {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin-bottom: 20px;
+  gap: 4px;
+}
+.auth-tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.auth-tab-btn.active {
+  background: var(--grad-cyan-blue);
+  color: #030712;
+  box-shadow: 0 2px 10px rgba(0, 242, 254, 0.3);
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+.form-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.form-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 11px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.2s ease;
+}
+.form-input:focus {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 14px rgba(0, 242, 254, 0.25);
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.btn-auth-submit {
+  width: 100%;
+  background: var(--grad-cyan-blue);
+  color: #030712;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 800;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: var(--glow-cyan);
+  transition: all 0.25s ease;
+}
+.btn-auth-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+}
+
+/* ==================== MODAL OVERLAY ==================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(14px);
+  z-index: 1500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal-box {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  animation: modalScale 0.25s ease;
+}
+@keyframes modalScale {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.modal-header h3 {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 800;
+}
+.btn-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+}
+.btn-modal-close:hover { color: var(--accent-red); }
+
+/* QR Code Box */
+.checkout-qr-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 12px 0 14px;
+  text-align: center;
+}
+.checkout-qr-frame {
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 242, 254, 0.25), 0 0 0 2px rgba(0, 242, 254, 0.4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.checkout-qr-frame:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 242, 254, 0.4), 0 0 0 2px var(--accent-cyan);
+}
+.checkout-qr-image {
+  width: 190px;
+  height: 190px;
+  max-width: 58vw;
+  max-height: 58vw;
+  object-fit: contain;
+  display: block;
+  border-radius: 8px;
+}
+.qr-scan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 242, 254, 0.12);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 10px;
+  letter-spacing: 0.3px;
+}
+.qr-supported-apps {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-top: 5px;
+  letter-spacing: 0.5px;
+}
+.qr-supported-apps span {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.upi-copy-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+
+/* Binance Pay Card Styles */
+.binance-pay-box {
+  background: linear-gradient(135deg, rgba(240, 185, 11, 0.08) 0%, rgba(18, 22, 28, 0.9) 100%);
+  border: 1px solid rgba(240, 185, 11, 0.35);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin: 10px 0 14px;
+  box-shadow: 0 4px 20px rgba(240, 185, 11, 0.12);
+  text-align: left;
+}
+.binance-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.binance-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(240, 185, 11, 0.15);
+  color: #f0b90b;
+  border: 1px solid rgba(240, 185, 11, 0.4);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.binance-id-card {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px dashed rgba(240, 185, 11, 0.45);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+.binance-id-label {
+  font-size: 11px;
+  color: #d1d5db;
+  margin-bottom: 5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.binance-id-val-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.binance-id-text {
+  font-family: var(--font-mono);
+  font-size: 19px;
+  font-weight: 800;
+  color: #f0b90b;
+  letter-spacing: 1.5px;
+}
+.binance-copy-btn {
+  background: rgba(240, 185, 11, 0.18) !important;
+  color: #f0b90b !important;
+  border: 1px solid rgba(240, 185, 11, 0.45) !important;
+  font-size: 11.5px !important;
+  padding: 5px 12px !important;
+}
+.binance-copy-btn:hover {
+  background: #f0b90b !important;
+  color: #000000 !important;
+}
+.binance-guide-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+.bguide-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bguide-num {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(240, 185, 11, 0.2);
+  color: #f0b90b;
+  font-size: 10px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.bguide-code {
+  font-family: var(--font-mono);
+  color: #f0b90b;
+  background: rgba(240, 185, 11, 0.12);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.checkout-method-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.checkout-method-btn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.checkout-method-btn:hover {
+  color: #ffffff;
+}
+.checkout-method-btn.active {
+  background: rgba(0, 242, 254, 0.15);
+  color: var(--accent-cyan);
+  border-color: rgba(0, 242, 254, 0.4);
+}
+.checkout-method-btn.active.binance {
+  background: rgba(240, 185, 11, 0.15);
+  color: #f0b90b;
+  border-color: rgba(240, 185, 11, 0.45);
+}
+
+/* Tab pages container */
+.tab-content-page {
+  display: none;
+}
+.tab-content-page.active {
+  display: block;
+}
+
+/* ================================================================
+   MOBILE RESPONSIVENESS OVERRIDES (< 768px and < 480px)
+   ================================================================ */
+@media (max-width: 768px) {
+  /* Prevent content hiding behind fixed bottom nav */
+  body {
+    padding-bottom: 85px !important;
+  }
+
+  .app-container {
+    padding: 10px 12px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Compact Header */
+  header.app-header {
+    padding: 8px 12px;
+    top: 6px;
+    margin-bottom: 12px;
+    border-radius: var(--radius-lg);
+  }
+  .brand-logo-gem {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+  .brand-info h1 {
+    font-size: 14px;
+  }
+  .brand-info .tagline {
+    display: none; /* Hide tagline on mobile to preserve header real estate */
+  }
+  .header-right {
+    gap: 6px;
+  }
+  .user-badge-pill {
+    padding: 3px 8px;
+    font-size: 11px;
+    max-width: 130px;
+    gap: 5px;
+  }
+  .user-badge-pill #user-pill-name {
+    max-width: 55px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+  }
+  .user-badge-pill .plan-tag {
+    font-size: 8.5px;
+    padding: 1px 4px;
+  }
+  .btn-header {
+    padding: 6px 10px;
+    font-size: 11.5px;
+    gap: 4px;
+  }
+
+  /* Hero Slots Card */
+  .hero-slots-card {
+    padding: 14px 14px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 12px;
+  }
+  .hero-slots-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .slot-visual {
+    align-items: center;
+    gap: 12px;
+  }
+  .slot-number-box {
+    font-size: 34px;
+  }
+  .slot-meta h2 {
+    font-size: 13px;
+  }
+  .slot-meta p {
+    font-size: 11px;
+  }
+  .hero-plan-time-pill {
+    font-size: 10.5px;
+    padding: 3px 8px;
+  }
+  .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+  .hero-actions .btn-cyber-primary,
+  .hero-actions .btn-cyber-outline {
+    width: 100%;
+    justify-content: center;
+    padding: 9px 8px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  /* Stats Grid (2-columns on mobile) */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .stat-box {
+    padding: 10px 10px;
+    border-radius: 12px;
+  }
+  .stat-box .stat-label {
+    font-size: 10px;
+  }
+  .stat-box .stat-value {
+    font-size: 19px;
+  }
+  #stat-remaining-plan-time {
+    font-size: 12px !important;
+    letter-spacing: 0;
+    line-height: 1.2;
+    word-break: break-all;
+  }
+
+  /* Accounts List & Card */
+  .account-cards-list {
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .account-card {
+    padding: 12px;
+    border-radius: var(--radius-lg);
+  }
+  .player-main-row {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .player-avatar-box {
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
+  }
+  .player-name {
+    font-size: 14px;
+    max-width: 140px;
+  }
+  .player-uid-sub {
+    font-size: 10.5px;
+  }
+  .card-top-badges {
+    margin-bottom: 8px;
+  }
+  .card-bottom-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .card-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 6px;
+  }
+  .card-btn-group .btn-card-action {
+    flex: 1 1 calc(50% - 6px);
+    justify-content: center;
+    padding: 7px 6px;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  /* Terminal Console Feed - Prevent horizontal stretching */
+  .console-wrapper {
+    border-radius: var(--radius-lg);
+  }
+  .console-logs-feed {
+    padding: 10px 10px;
+    max-height: 170px;
+    overflow-x: hidden !important;
+    word-break: break-all !important;
+    overflow-wrap: anywhere !important;
+  }
+  .log-row {
+    flex-wrap: wrap;
+    gap: 4px;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+  }
+  .log-row .log-time {
+    font-size: 9.5px;
+  }
+  .log-row .log-msg {
+    font-size: 10.5px;
+    word-break: break-all !important;
+    overflow-wrap: anywhere !important;
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+
+  /* Modals - Clean mobile fit and scroll */
+  .modal-overlay {
+    padding: 10px;
+  }
+  .modal-box {
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 16px 14px;
+    border-radius: var(--radius-lg);
+  }
+  .modal-header h3 {
+    font-size: 16px;
+  }
+
+  /* Tables - Smooth horizontal swipe with readable min-width */
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    border-radius: 12px;
+  }
+  table.cyber-table {
+    min-width: 540px !important;
+    white-space: nowrap !important;
+    font-size: 11.5px;
+  }
+  table.cyber-table th,
+  table.cyber-table td {
+    padding: 9px 10px;
+  }
+
+  /* Plans on Buy Tab */
+  .plans-header-hero {
+    padding: 14px 6px 12px;
+  }
+  .plans-header-hero h2 {
+    font-size: 20px;
+  }
+  .plans-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+  .plan-card {
+    padding: 16px;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Toast Notifications */
+  #toast-container {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+  }
+  .toast {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-actions {
+    grid-template-columns: 1fr;
+  }
+  .card-btn-group .btn-card-action {
+    flex: 1 1 100%;
+  }
+  .checkout-qr-image {
+    width: 160px;
+    height: 160px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Toast Notification Container -->
+<div id="toast-container"></div>
+
+<div class="app-container">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="app-header">
+    <div class="brand-section" onclick="switchTab('home')">
+      <div class="brand-logo-gem">
+        <i class="fa-solid fa-bolt"></i>
+      </div>
+      <div class="brand-info">
+        <h1>TITAN X ANURAG <span style="font-size:10px; color:var(--accent-cyan); font-weight:700;">PRO</span></h1>
+        <div class="tagline">ULTRA EXP ENGINE • OB55</div>
+      </div>
+    </div>
+
+    <!-- Desktop Navigation Tabs -->
+    <nav class="desktop-nav">
+      <button class="nav-tab-btn active" id="dtab-home" onclick="switchTab('home')"><i class="fa-solid fa-house"></i> Home</button>
+      <button class="nav-tab-btn" id="dtab-buy" onclick="switchTab('buy')"><i class="fa-solid fa-bolt-lightning"></i> Buy Plans</button>
+      <button class="nav-tab-btn" id="dtab-history" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left"></i> History</button>
+      <button class="nav-tab-btn" id="dtab-contact" onclick="switchTab('contact')"><i class="fa-solid fa-paper-plane"></i> Contact</button>
+      <button class="nav-tab-btn admin-btn" id="dtab-admin" style="display:none;" onclick="switchTab('admin')"><i class="fa-solid fa-shield-halved"></i> Admin</button>
+    </nav>
+
+    <div class="header-right">
+      <div class="user-badge-pill" id="user-pill-container" style="display:none;">
+        <div class="user-avatar-mini" id="user-pill-avatar">U</div>
+        <span id="user-pill-name">User</span>
+        <span class="plan-tag" id="user-pill-plan">Free</span>
+      </div>
+
+      <button class="btn-header admin-btn" id="header-admin-btn" style="display:none;" onclick="switchTab('admin')">
+        <i class="fa-solid fa-shield-halved"></i> Admin
+      </button>
+
+      <button class="btn-header danger" id="header-logout-btn" style="display:none;" onclick="handleLogout()">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+
+      <button class="btn-header" id="header-login-btn" onclick="openAuthModal('signin')">
+        <i class="fa-solid fa-user"></i> Sign In
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== TAB 1: HOME (DASHBOARD) ==================== -->
+  <main id="view-home" class="tab-content-page active">
+
+    <!-- Hero Slots Banner -->
+    <section class="hero-slots-card">
+      <div class="hero-slots-inner">
+        <div class="slot-visual">
+          <div class="slot-number-box" id="hero-available-slots">0</div>
+          <div class="slot-meta">
+            <h2>Available Slots</h2>
+            <p id="hero-plan-name">Active Plan: Free Tier (0 / 0 Slots Available)</p>
+            <div class="hero-plan-time-pill" id="hero-remaining-time-pill">
+              <i class="fa-solid fa-hourglass-half"></i>
+              <span id="hero-remaining-time-text">Plan Expiry: Loading...</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <button class="btn-cyber-primary" onclick="openAddAccountModal()">
+            <i class="fa-solid fa-plus"></i> Add Account
+          </button>
+          <button class="btn-cyber-outline" onclick="switchTab('buy')">
+            <i class="fa-solid fa-bolt"></i> Upgrade Plan
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 Metric Cards -->
+    <section class="stats-grid">
+      <div class="stat-box cyan">
+        <div class="stat-label"><span>Active Accounts</span> <i class="fa-solid fa-users"></i></div>
+        <div class="stat-value" id="stat-active-accounts">0</div>
+      </div>
+      <div class="stat-box purple">
+        <div class="stat-label"><span>Matches Started</span> <i class="fa-solid fa-play"></i></div>
+        <div class="stat-value" id="stat-matches-started">0</div>
+      </div>
+      <div class="stat-box green">
+        <div class="stat-label"><span>Matches Done</span> <i class="fa-solid fa-circle-check"></i></div>
+        <div class="stat-value" id="stat-matches-done">0</div>
+      </div>
+      <div class="stat-box pink">
+        <div class="stat-label"><span>Total EXP Gained</span> <i class="fa-solid fa-arrow-trend-up"></i></div>
+        <div class="stat-value" id="stat-total-exp">+0</div>
+      </div>
+      <div class="stat-box amber">
+        <div class="stat-label"><span>Remaining Plan Time</span> <i class="fa-solid fa-hourglass-half"></i></div>
+        <div class="stat-value" id="stat-remaining-plan-time" style="font-size:16px; letter-spacing:0.5px;">--:--:--</div>
+      </div>
+      <div class="stat-box blue">
+        <div class="stat-label"><span>Slots Remaining</span> <i class="fa-solid fa-layer-group"></i></div>
+        <div class="stat-value" id="stat-slots-count">0</div>
+      </div>
+    </section>
+
+    <!-- Account Command Section -->
+    <section class="accounts-section">
+      <div class="section-header">
+        <div class="section-title">
+          <i class="fa-solid fa-gamepad" style="color:var(--accent-cyan);"></i>
+          <span>Account Command</span>
+          <span class="badge-count" id="accounts-count-badge">0</span>
+        </div>
+        <button class="btn-cyber-outline" style="padding:6px 12px; font-size:12px;" onclick="openAddAccountModal()">
+          <i class="fa-solid fa-plus"></i> Add Account
+        </button>
+      </div>
+
+      <!-- Account Cards List Container -->
+      <div class="account-cards-list" id="account-cards-container">
+        <!-- Rendered via JS -->
+      </div>
+    </section>
+
+    <!-- Bot Live Console Terminal -->
+    <section class="console-wrapper">
+      <div class="console-topbar" style="flex-wrap:wrap; gap:8px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="terminal-dots">
+            <div class="tdot red"></div>
+            <div class="tdot yellow"></div>
+            <div class="tdot green"></div>
+          </div>
+          <div class="console-title"><i class="fa-solid fa-terminal"></i> BOT ENGINE CONSOLE STREAM</div>
+        </div>
+
+        <!-- Log Category Filters -->
+        <div class="console-filter-group">
+          <button class="console-filter-btn active" id="log-filter-all" onclick="setLogCategoryFilter('all')">
+            <i class="fa-solid fa-list-ul"></i> All (<span id="log-count-all">0</span>)
+          </button>
+          <button class="console-filter-btn" id="log-filter-matches" onclick="setLogCategoryFilter('matches')">
+            <i class="fa-solid fa-gamepad" style="color:var(--accent-green);"></i> Matches (<span id="log-count-matches">0</span>)
+          </button>
+          <button class="console-filter-btn" id="log-filter-exp" onclick="setLogCategoryFilter('exp')">
+            <i class="fa-solid fa-arrow-trend-up" style="color:var(--accent-cyan);"></i> EXP (<span id="log-count-exp">0</span>)
+          </button>
+          <button class="console-filter-btn" id="log-filter-accounts" onclick="setLogCategoryFilter('accounts')">
+            <i class="fa-solid fa-users-gear" style="color:var(--accent-purple);"></i> Accounts (<span id="log-count-accounts">0</span>)
+          </button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button class="btn-card-action" style="padding:2px 8px; font-size:10px;" onclick="clearConsoleFeed()" title="Clear terminal view">
+            <i class="fa-solid fa-eraser"></i> Clear
+          </button>
+          <button class="btn-card-action" style="padding:2px 8px; font-size:10px;" onclick="fetchStats()" title="Poll now">
+            <i class="fa-solid fa-rotate"></i> Poll
+          </button>
+        </div>
+      </div>
+      <div class="console-logs-feed" id="console-logs-feed">
+        <div class="log-row"><span class="log-time">[System]</span> <span class="log-msg info">Bot engine initialized. Awaiting commands...</span></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== TAB 2: BUY PLANS ==================== -->
+  <main id="view-buy" class="tab-content-page">
+    <div class="plans-header-hero">
+      <div class="badge-glow-tag"><i class="fa-solid fa-bolt"></i> Instant Activation</div>
+      <h2>Choose Your Level Up Plan</h2>
+      <p>Instant account slot unlocking verified after admin confirmation</p>
+
+      <div class="currency-toggle-wrapper">
+        <div class="currency-pill">
+          <button class="currency-btn active" id="curr-inr" onclick="setCurrency('INR')">INR (₹)</button>
+          <button class="currency-btn" id="curr-usd" onclick="setCurrency('USD')">USD ($)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plans Cards Grid -->
+    <div class="plans-cards-grid" id="plans-container">
+      <!-- Injected dynamically via JS -->
+    </div>
+  </main>
+
+  <!-- ==================== TAB 3: HISTORY ==================== -->
+  <main id="view-history" class="tab-content-page">
+    <div class="section-header" style="margin-top:10px;">
+      <div class="section-title">
+        <i class="fa-solid fa-receipt" style="color:var(--accent-cyan);"></i>
+        <span>Activity & Order History</span>
+      </div>
+    </div>
+
+    <div class="history-subnav">
+      <button class="subnav-btn active" id="subtab-orders" onclick="switchHistoryTab('orders')">My Plan Orders</button>
+      <button class="subnav-btn" id="subtab-matches" onclick="switchHistoryTab('matches')">Match Log</button>
+    </div>
+
+    <div id="history-orders-view">
+      <div id="orders-list-container">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <div id="history-matches-view" style="display:none;">
+      <div class="empty-state-box">
+        <i class="fa-solid fa-gamepad empty-state-icon"></i>
+        <h3>Match History Stream</h3>
+        <p>Real-time match data is streamed directly to your active account cards and console terminal.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==================== TAB 4: CONTACT ==================== -->
+  <main id="view-contact" class="tab-content-page">
+    <div class="contact-hero">
+      <h2>Contact Us</h2>
+      <p>Reach out for orders, support, custom plans, or any questions</p>
+    </div>
+
+    <div class="contact-cards-list">
+      <a href="https://t.me/SILENT_API" target="_blank" class="contact-channel-card" id="contact-link-channel">
+        <div class="cchannel-icon"><i class="fa-brands fa-telegram"></i></div>
+        <div class="cchannel-info">
+          <h4>Telegram Channel</h4>
+          <p id="contact-text-channel">@SILENT_API</p>
+        </div>
+        <i class="fa-solid fa-chevron-right cchannel-arrow"></i>
+      </a>
+
+      <a href="https://t.me/SILENTLIKEGROUP" target="_blank" class="contact-channel-card" id="contact-link-group">
+        <div class="cchannel-icon" style="color:#38bdf8; background:rgba(56, 189, 248, 0.12);"><i class="fa-solid fa-users"></i></div>
+        <div class="cchannel-info">
+          <h4>Telegram Group</h4>
+          <p id="contact-text-group">@SILENTLIKEGROUP</p>
+        </div>
+        <i class="fa-solid fa-chevron-right cchannel-arrow"></i>
+      </a>
+
+      <a href="https://t.me/SIL3NT_KILLER" target="_blank" class="contact-channel-card" id="contact-link-support">
+        <div class="cchannel-icon" style="color:#c084fc; background:rgba(192, 132, 252, 0.12);"><i class="fa-solid fa-headset"></i></div>
+        <div class="cchannel-info">
+          <h4>Customer Support 24/7</h4>
+          <p id="contact-text-support">@SIL3NT_KILLER</p>
+        </div>
+        <i class="fa-solid fa-chevron-right cchannel-arrow"></i>
+      </a>
+    </div>
+
+    <div style="text-align:center; font-size:12px; color:var(--text-muted); margin-top:20px;">
+      © 2026 LEVEL UP SERVICE • OB55 Anti-Ban Protected
+    </div>
+  </main>
+
+  <!-- ==================== TAB 5: ADMIN PANEL ==================== -->
+  <main id="view-admin" class="tab-content-page">
+    <div class="admin-badge-ribbon"><i class="fa-solid fa-shield-halved"></i> Administrator Control Center</div>
+
+    <!-- Admin Overview Stats -->
+    <section class="stats-grid" style="margin-bottom:20px;">
+      <div class="stat-box cyan">
+        <div class="stat-label"><span>Total Users</span> <i class="fa-solid fa-users"></i></div>
+        <div class="stat-value" id="admin-stat-users">0</div>
+      </div>
+      <div class="stat-box green">
+        <div class="stat-label"><span>Active Accounts</span> <i class="fa-solid fa-bolt"></i></div>
+        <div class="stat-value" id="admin-stat-active-accounts">0</div>
+      </div>
+      <div class="stat-box purple">
+        <div class="stat-label"><span>Total Matches</span> <i class="fa-solid fa-play"></i></div>
+        <div class="stat-value" id="admin-stat-matches">0</div>
+      </div>
+      <div class="stat-box pink">
+        <div class="stat-label"><span>Total EXP Gained</span> <i class="fa-solid fa-arrow-trend-up"></i></div>
+        <div class="stat-value" id="admin-stat-exp">+0</div>
+      </div>
+      <div class="stat-box amber">
+        <div class="stat-label"><span>Total Revenue</span> <i class="fa-solid fa-money-bill-wave"></i></div>
+        <div class="stat-value" id="admin-stat-revenue">₹0</div>
+      </div>
+      <div class="stat-box blue">
+        <div class="stat-label"><span>Pending Orders</span> <i class="fa-solid fa-clock"></i></div>
+        <div class="stat-value" id="admin-stat-pending">0</div>
+      </div>
+    </section>
+
+    <div class="admin-subnav">
+      <button class="admin-tab-btn active" id="atab-orders" onclick="switchAdminTab('orders')"><i class="fa-solid fa-receipt"></i> Plan Approval Requests</button>
+      <button class="admin-tab-btn" id="atab-users" onclick="switchAdminTab('users')"><i class="fa-solid fa-user-gear"></i> User Management</button>
+      <button class="admin-tab-btn" id="atab-accounts" onclick="switchAdminTab('accounts')"><i class="fa-solid fa-layer-group"></i> All Connected Accounts</button>
+      <button class="admin-tab-btn" id="atab-plans" onclick="switchAdminTab('plans')"><i class="fa-solid fa-tags"></i> Plan Pricing & Slots</button>
+      <button class="admin-tab-btn" id="atab-settings" onclick="switchAdminTab('settings')"><i class="fa-solid fa-sliders"></i> MongoDB & Payment Settings</button>
+    </div>
+
+    <!-- Admin Tab: Plan Orders -->
+    <div id="admin-view-orders">
+      <div class="table-responsive">
+        <table class="cyber-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>User</th>
+              <th>Plan</th>
+              <th>Amount</th>
+              <th>UTR / Txn ID</th>
+              <th>Telegram</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="admin-orders-table-body">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Admin Tab: Users -->
+    <div id="admin-view-users" style="display:none;">
+      <div class="table-responsive">
+        <table class="cyber-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Plan & Remaining Time</th>
+              <th>Slots (Used / Max)</th>
+              <th>Connected UIDs</th>
+              <th>Total EXP</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-users-table-body">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Admin Tab: All Connected Accounts (Admin Added vs User Added) -->
+    <div id="admin-view-accounts" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:12px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div class="filter-toggle-group">
+            <button class="filter-btn active" id="btn-filter-acc-all" onclick="setAdminAccountFilter('all')">
+              <i class="fa-solid fa-layer-group"></i> All Accounts (<span id="count-acc-all">0</span>)
+            </button>
+            <button class="filter-btn" id="btn-filter-acc-admin" onclick="setAdminAccountFilter('admin')">
+              <i class="fa-solid fa-shield-halved" style="color:var(--accent-purple);"></i> Admin Added (<span id="count-acc-admin">0</span>)
+            </button>
+            <button class="filter-btn" id="btn-filter-acc-user" onclick="setAdminAccountFilter('user')">
+              <i class="fa-solid fa-users" style="color:var(--accent-cyan);"></i> User Added (<span id="count-acc-user">0</span>)
+            </button>
+          </div>
+          <div style="font-size:11.5px; color:var(--text-secondary); background:rgba(255,255,255,0.04); padding:4px 10px; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+            <i class="fa-solid fa-file-code" style="color:var(--accent-green);"></i> In accounts.json: <strong id="count-acc-json" style="color:#fff;">0</strong>
+          </div>
+        </div>
+        <input type="text" class="form-input" id="admin-accounts-search" placeholder="Filter by UID, Nickname, or Owner..." style="max-width:300px; font-size:12px; padding:6px 12px;" oninput="filterAdminAccountsTable()">
+      </div>
+      <div class="table-responsive">
+        <table class="cyber-table">
+          <thead>
+            <tr>
+              <th>Account UID</th>
+              <th>Nickname</th>
+              <th>Added By (Source)</th>
+              <th>Region</th>
+              <th>Level / EXP</th>
+              <th>Matches</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-accounts-table-body">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Admin Tab: Plan Pricing & Slots Management -->
+    <div id="admin-view-plans" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h3 style="font-family:var(--font-heading); font-size:16px; margin-bottom:4px;">
+            <i class="fa-solid fa-tags" style="color:var(--accent-cyan);"></i> Manage Plans, Pricing & Slots
+          </h3>
+          <p style="font-size:12.5px; color:var(--text-secondary);">
+            Edit plan prices (INR / USD), slot limits, duration hours, and badge labels. Changes apply immediately to all users.
+          </p>
+        </div>
+        <button class="btn-cyber-primary" onclick="loadAdminPlansConfig()" style="font-size:12px; padding:6px 14px;">
+          <i class="fa-solid fa-rotate"></i> Refresh Plans
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="cyber-table">
+          <thead>
+            <tr>
+              <th>Plan Name & ID</th>
+              <th>Price (INR ₹)</th>
+              <th>Price (USD $)</th>
+              <th>Slot Limit</th>
+              <th>Duration (Hours)</th>
+              <th>Duration Display</th>
+              <th>Badge Text</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="admin-plans-table-body">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Admin Tab: Settings & MongoDB -->
+    <div id="admin-view-settings" style="display:none;">
+      <div class="plan-card" style="max-width:700px; margin:0 auto 20px;">
+        <h3 style="font-family:var(--font-heading); font-size:16px; margin-bottom:12px;">
+          <i class="fa-solid fa-database" style="color:var(--accent-green);"></i> MongoDB Cluster Connection
+        </h3>
+        <p style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px;">
+          Connect your live MongoDB Atlas Cluster (e.g. <code>mongodb+srv://...</code>).
+        </p>
+        <div class="form-group">
+          <label class="form-label">Current Status</label>
+          <div style="font-family:var(--font-mono); font-size:13px; font-weight:700; margin-bottom:10px;" id="admin-mongo-status-text">
+            Checking...
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">MongoDB Cluster URI</label>
+          <input type="text" class="form-input" id="admin-input-mongo-uri" placeholder="mongodb+srv://user:pass@cluster.mongodb.net/?retryWrites=true&w=majority">
+        </div>
+        <button class="btn-cyber-primary" onclick="testAndSaveMongoUri()">
+          <i class="fa-solid fa-plug"></i> Test & Connect Cluster
+        </button>
+      </div>
+
+      <div class="plan-card" style="max-width:700px; margin:0 auto;">
+        <h3 style="font-family:var(--font-heading); font-size:16px; margin-bottom:14px;">
+          <i class="fa-solid fa-indian-rupee-sign" style="color:var(--accent-cyan);"></i> Payment & Telegram Configuration
+        </h3>
+        <div class="form-group">
+          <label class="form-label">Admin UPI ID</label>
+          <input type="text" class="form-input" id="admin-input-upi" placeholder="example@upi">
+        </div>
+        <div class="form-group">
+          <label class="form-label">UPI Payee Name</label>
+          <input type="text" class="form-input" id="admin-input-upiname" placeholder="LEVEL UP SERVICE">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fa-brands fa-bitcoin" style="color:#f0b90b;"></i> Binance Pay ID (International USD Payments)</label>
+          <input type="text" class="form-input" id="admin-input-binanceid" placeholder="1231529920">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telegram Channel Link</label>
+          <input type="text" class="form-input" id="admin-input-tgchannel" placeholder="https://t.me/SILENT_API">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telegram Group Link</label>
+          <input type="text" class="form-input" id="admin-input-tggroup" placeholder="https://t.me/SILENTLIKEGROUP">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telegram Support Handle Link</label>
+          <input type="text" class="form-input" id="admin-input-tgsupport" placeholder="https://t.me/SIL3NT_KILLER">
+        </div>
+        <button class="btn-cyber-primary" onclick="saveAdminSettings()">
+          <i class="fa-solid fa-floppy-disk"></i> Save System Settings
+        </button>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<!-- ==================== MOBILE BOTTOM BAR ==================== -->
+<nav class="mobile-bottom-nav">
+  <button class="bnav-item active" id="bnav-home" onclick="switchTab('home')">
+    <i class="fa-solid fa-house"></i>
+    <span>HOME</span>
+  </button>
+  <button class="bnav-item" id="bnav-buy" onclick="switchTab('buy')">
+    <i class="fa-solid fa-bolt-lightning"></i>
+    <span>BUY</span>
+  </button>
+  <button class="bnav-item" id="bnav-history" onclick="switchTab('history')">
+    <i class="fa-solid fa-clock-rotate-left"></i>
+    <span>HISTORY</span>
+  </button>
+  <button class="bnav-item" id="bnav-contact" onclick="switchTab('contact')">
+    <i class="fa-solid fa-paper-plane"></i>
+    <span>CONTACT</span>
+  </button>
+  <button class="bnav-item" id="bnav-admin" style="display:none;" onclick="switchTab('admin')">
+    <i class="fa-solid fa-shield-halved"></i>
+    <span>ADMIN</span>
+  </button>
+</nav>
+
+<!-- ==================== AUTH MODAL (SIGN IN / SIGN UP) ==================== -->
+<div class="auth-overlay" id="auth-modal" style="display:none;">
+  <div class="auth-box">
+    <div class="auth-header">
+      <div class="auth-logo-badge">
+        <i class="fa-solid fa-bolt"></i>
+      </div>
+      <h2>TITAN X ANURAG</h2>
+      <p>LEVEL UP SERVICE</p>
+      <div class="auth-engine-pill"><span class="pulse-indicator"></span> PREMIUM ENGINE OB55</div>
+    </div>
+
+    <div class="auth-tab-switch">
+      <button class="auth-tab-btn active" id="atab-btn-signin" onclick="switchAuthMode('signin')">Sign In</button>
+      <button class="auth-tab-btn" id="atab-btn-signup" onclick="switchAuthMode('signup')">Sign Up</button>
+    </div>
+
+    <!-- Sign In Form -->
+    <form id="signin-form" onsubmit="submitSignIn(event)">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-input" id="signin-username" placeholder="Enter your username" required autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" id="signin-password" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn-auth-submit" id="btn-signin-text">Sign In →</button>
+    </form>
+
+    <!-- Sign Up Form -->
+    <form id="signup-form" style="display:none;" onsubmit="submitSignUp(event)">
+      <div class="form-group">
+        <label class="form-label">Choose Username</label>
+        <input type="text" class="form-input" id="signup-username" placeholder="At least 3 characters" required autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Choose Password</label>
+        <input type="password" class="form-input" id="signup-password" placeholder="At least 4 characters" required autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Telegram Username (Optional)</label>
+        <input type="text" class="form-input" id="signup-telegram" placeholder="@yourhandle">
+      </div>
+      <button type="submit" class="btn-auth-submit" id="btn-signup-text">Create Account →</button>
+    </form>
+
+    <div style="display:flex; justify-content:space-between; margin-top:16px; font-size:11.5px; color:var(--text-muted);">
+      <a href="https://t.me/SILENT_API" target="_blank" style="color:var(--accent-cyan); text-decoration:none;">Telegram</a>
+      <a href="https://t.me/SIL3NT_KILLER" target="_blank" style="color:var(--accent-cyan); text-decoration:none;">Support</a>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ADD ACCOUNT MODAL ==================== -->
+<div class="modal-overlay" id="add-account-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Add FreeFire Account</h3>
+      <button class="btn-modal-close" onclick="closeModal('add-account-modal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <div class="auth-tab-switch" style="margin-bottom:14px;">
+      <button class="auth-tab-btn active" id="acc-tab-guest" onclick="switchAccType('guest')">Guest UID</button>
+      <button class="auth-tab-btn" id="acc-tab-token" onclick="switchAccType('token')">Auth Token</button>
+    </div>
+
+    <form id="add-account-form" onsubmit="submitAddAccount(event)">
+      <div id="acc-fields-guest">
+        <div class="form-group">
+          <label class="form-label">Account UID</label>
+          <input type="text" class="form-input" id="acc-input-uid" placeholder="e.g. 6603048762">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Guest Password</label>
+          <input type="text" class="form-input" id="acc-input-pwd" placeholder="e.g. PTINCE_nqXtNfAA">
+        </div>
+      </div>
+
+      <div id="acc-fields-token" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Full JWT Access Token</label>
+          <textarea class="form-input" id="acc-input-token" rows="3" placeholder="eyJhbGciOi..."></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Game Region</label>
+        <select class="form-input" id="acc-input-region">
+          <option value="IND" selected>IND (India)</option>
+          <option value="BD">BD (Bangladesh)</option>
+          <option value="PK">PK (Pakistan)</option>
+          <option value="ID">ID (Indonesia)</option>
+          <option value="ME">ME (Middle East)</option>
+          <option value="SG">SG (Singapore)</option>
+          <option value="TH">TH (Thailand)</option>
+          <option value="VN">VN (Vietnam)</option>
+          <option value="BR">BR (Brazil)</option>
+          <option value="EUROPE">EUROPE</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Match Mode</label>
+        <select class="form-input" id="acc-input-mode">
+          <option value="AUTO" selected>Auto (BR &lt; Lvl 3, then Lone Wolf)</option>
+          <option value="BR">Only Battle Royale (BR Mode Only)</option>
+          <option value="LW">Only Lone Wolf (LW Mode Only)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-cyber-primary" style="width:100%; justify-content:center;">
+        <i class="fa-solid fa-plus"></i> Connect & Start Bot
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ==================== BUY PLAN CHECKOUT MODAL ==================== -->
+<div class="modal-overlay" id="checkout-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Checkout Plan</h3>
+      <button class="btn-modal-close" onclick="closeModal('checkout-modal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div style="background:rgba(0,242,254,0.08); border:1px solid rgba(0,242,254,0.2); border-radius:var(--radius-md); padding:12px; margin-bottom:12px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-weight:700; font-size:15px;" id="checkout-plan-name">Select Plan</span>
+        <span style="font-family:var(--font-mono); font-size:18px; font-weight:800; color:var(--accent-cyan);" id="checkout-plan-price">--</span>
+      </div>
+      <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px;" id="checkout-plan-details">
+        Select a plan to proceed
+      </div>
+    </div>
+
+    <!-- Currency / Payment Method Tabs -->
+    <div class="checkout-method-tabs">
+      <button type="button" class="checkout-method-btn active" id="chk-btn-inr" onclick="setCheckoutMethod('INR')">
+        <i class="fa-solid fa-indian-rupee-sign"></i> ₹ INR (UPI QR)
+      </button>
+      <button type="button" class="checkout-method-btn binance" id="chk-btn-usd" onclick="setCheckoutMethod('USD')">
+        <i class="fa-brands fa-bitcoin"></i> $ USD (Binance ID)
+      </button>
+    </div>
+
+    <!-- Payment Option 1: India / UPI QR & Auto Verification -->
+    <div id="checkout-method-upi">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding:6px 10px; background:rgba(0,255,163,0.06); border:1px solid rgba(0,255,163,0.2); border-radius:var(--radius-sm);">
+        <span style="font-size:12px; font-weight:700; color:var(--accent-green);"><i class="fa-solid fa-bolt"></i> Instant Auto-Activation</span>
+        <span id="checkout-order-id-badge" style="font-family:var(--font-mono); font-size:11px; color:var(--accent-cyan); font-weight:700;">ORD-INIT</span>
+      </div>
+
+      <div class="checkout-qr-wrapper" style="position:relative;">
+        <div class="checkout-qr-frame" style="position:relative; min-height:220px; display:flex; align-items:center; justify-content:center;">
+          <img id="checkout-qr-img" src="" alt="Payment QR Code" class="checkout-qr-image" style="transition:opacity 0.25s ease;">
+          <div id="checkout-qr-loading" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(11,15,29,0.9); border-radius:12px; font-size:12px; color:var(--accent-cyan); gap:8px;">
+            <i class="fa-solid fa-circle-notch fa-spin" style="font-size:24px;"></i>
+            <span>Generating Dynamic Payment QR...</span>
+          </div>
+        </div>
+        <div class="qr-scan-badge">
+          <i class="fa-solid fa-qrcode"></i> Scan & Pay with Any UPI App
+        </div>
+        <div class="qr-supported-apps">
+          <span>GPay</span> • <span>PhonePe</span> • <span>Paytm</span> • <span>BHIM</span> • <span>Cred</span>
+        </div>
+      </div>
+
+      <p style="font-size:11.5px; color:var(--text-secondary); text-align:center; margin-top:8px; line-height:1.4;">
+        Scan the QR above, complete the payment, then enter the <b>12-digit UTR</b> below for instant activation.
+      </p>
+    </div>
+
+    <!-- Payment Option 2: International / Binance Pay ID -->
+    <div id="checkout-method-binance" style="display:none;">
+      <div class="binance-pay-box">
+        <div class="binance-badge-row">
+          <span class="binance-tag"><i class="fa-solid fa-coins"></i> BINANCE PAY</span>
+          <span style="font-size:11px; color:#f0b90b; font-weight:700;"><i class="fa-solid fa-shield-halved"></i> Fast & Zero Fee</span>
+        </div>
+        <div class="binance-id-card">
+          <div class="binance-id-label"><i class="fa-solid fa-id-badge"></i> Binance Pay ID (Pay / Send Crypto)</div>
+          <div class="binance-id-val-row">
+            <span id="checkout-binance-id" class="binance-id-text">1231529920</span>
+            <button type="button" class="btn-card-action binance-copy-btn" onclick="copyBinanceId()">
+              <i class="fa-solid fa-copy"></i> Copy ID
+            </button>
+          </div>
+        </div>
+        <div class="binance-guide-list">
+          <div class="bguide-item">
+            <span class="bguide-num">1</span>
+            <span>Open <b>Binance App</b> &rarr; Tap <b>Pay</b> (or Send)</span>
+          </div>
+          <div class="bguide-item">
+            <span class="bguide-num">2</span>
+            <span>Select <b>Pay ID / Binance ID</b> &amp; paste: <b class="bguide-code" id="bstep-binance-id">1231529920</b></span>
+          </div>
+          <div class="bguide-item">
+            <span class="bguide-num">3</span>
+            <span>Send exact amount: <b id="checkout-binance-amount" style="color:#f0b90b; font-weight:800;">$0.30</b> (USDT / Crypto)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form id="order-submit-form" onsubmit="submitOrder(event)">
+      <div class="form-group">
+        <label class="form-label" id="order-txn-label"><i class="fa-solid fa-receipt"></i> 12-Digit UPI UTR / Ref No. *</label>
+        <input type="text" class="form-input" id="order-txn-id" placeholder="e.g. 412389471928 (from payment receipt)" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your Telegram Handle (Optional)</label>
+        <input type="text" class="form-input" id="order-tg-handle" placeholder="@username">
+      </div>
+      <button type="submit" id="btn-submit-order" class="btn-cyber-primary" style="width:100%; justify-content:center;">
+        <i class="fa-solid fa-bolt"></i> Verify &amp; Activate Plan Instantly
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ==================== ADMIN EDIT USER MODAL ==================== -->
+<div class="modal-overlay" id="admin-user-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Edit User Slots & Plan</h3>
+      <button class="btn-modal-close" onclick="closeModal('admin-user-modal')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <form id="admin-user-edit-form" onsubmit="submitAdminUserEdit(event)">
+      <input type="hidden" id="edit-user-id">
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-input" id="edit-user-name" disabled>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Available Slots</label>
+        <input type="number" class="form-input" id="edit-user-slots" min="0" max="100" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Plan Name / Tier</label>
+        <input type="text" class="form-input" id="edit-user-plan" placeholder="e.g. Daily VIP, Weekly VIP, Monthly VIP">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Add Subscription Time</label>
+        <select class="form-input" id="edit-user-add-time">
+          <option value="0">No additional time</option>
+          <option value="6">+6 Hours</option>
+          <option value="24">+24 Hours (1 Day)</option>
+          <option value="72">+3 Days</option>
+          <option value="168">+7 Days</option>
+          <option value="720">+30 Days</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">User Role</label>
+        <select class="form-input" id="edit-user-role">
+          <option value="user">Regular User</option>
+          <option value="admin">Administrator</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Account Status</label>
+        <select class="form-input" id="edit-user-status">
+          <option value="active">Active</option>
+          <option value="banned">Banned / Suspended</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Reset Password (Optional)</label>
+        <input type="password" class="form-input" id="edit-user-newpass" placeholder="Leave blank to keep unchanged">
+      </div>
+      <button type="submit" class="btn-cyber-primary" style="width:100%; justify-content:center;">
+        <i class="fa-solid fa-floppy-disk"></i> Update User
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- ==================== JAVASCRIPT LOGIC ==================== -->
+<script>
+// State Management
+let currentUser = null;
+let currentCurrency = 'INR';
+let allPlans = [];
+let botStatsData = null;
+let activeCheckoutPlan = null;
+let currentAccType = 'guest';
+
+// Toast System
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  let icon = 'fa-circle-info';
+  if (type === 'success') icon = 'fa-circle-check';
+  if (type === 'error') icon = 'fa-triangle-exclamation';
+  if (type === 'warning') icon = 'fa-bell';
+  
+  toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.animation = 'slideInRight 0.3s ease reverse forwards';
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
+}
+
+// Navigation Tabs Switcher
+function switchTab(tabId) {
+  // Update view
+  document.querySelectorAll('.tab-content-page').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(`view-${tabId}`);
+  if (target) target.classList.add('active');
+
+  // Update desktop nav
+  document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+  const dtab = document.getElementById(`dtab-${tabId}`);
+  if (dtab) dtab.classList.add('active');
+
+  // Update mobile bottom nav
+  document.querySelectorAll('.bnav-item').forEach(el => el.classList.remove('active'));
+  const bnav = document.getElementById(`bnav-${tabId}`);
+  if (bnav) bnav.classList.add('active');
+
+  // Tab specific loads
+  if (tabId === 'buy') loadPlans();
+  if (tabId === 'history') loadMyOrders();
+  if (tabId === 'admin') loadAdminDashboard();
+  if (tabId === 'home') fetchStats();
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function switchHistoryTab(subtab) {
+  document.getElementById('subtab-orders').classList.toggle('active', subtab === 'orders');
+  document.getElementById('subtab-matches').classList.toggle('active', subtab === 'matches');
+  document.getElementById('history-orders-view').style.display = subtab === 'orders' ? 'block' : 'none';
+  document.getElementById('history-matches-view').style.display = subtab === 'matches' ? 'block' : 'none';
+}
+
+function switchAdminTab(subtab) {
+  document.getElementById('atab-orders').classList.toggle('active', subtab === 'orders');
+  document.getElementById('atab-users').classList.toggle('active', subtab === 'users');
+  document.getElementById('atab-accounts').classList.toggle('active', subtab === 'accounts');
+  document.getElementById('atab-plans').classList.toggle('active', subtab === 'plans');
+  document.getElementById('atab-settings').classList.toggle('active', subtab === 'settings');
+
+  document.getElementById('admin-view-orders').style.display = subtab === 'orders' ? 'block' : 'none';
+  document.getElementById('admin-view-users').style.display = subtab === 'users' ? 'block' : 'none';
+  document.getElementById('admin-view-accounts').style.display = subtab === 'accounts' ? 'block' : 'none';
+  document.getElementById('admin-view-plans').style.display = subtab === 'plans' ? 'block' : 'none';
+  document.getElementById('admin-view-settings').style.display = subtab === 'settings' ? 'block' : 'none';
+
+  if (subtab === 'orders') loadAdminOrders();
+  if (subtab === 'users') loadAdminUsers();
+  if (subtab === 'accounts') loadAdminAccounts();
+  if (subtab === 'plans') loadAdminPlansConfig();
+  if (subtab === 'settings') loadAdminSettings();
+}
+
+// Modal Helpers
+function openModal(modalId) {
+  document.getElementById(modalId).classList.add('active');
+}
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove('active');
+}
+
+// Auth Modal
+function openAuthModal(mode = 'signin') {
+  document.getElementById('auth-modal').style.display = 'flex';
+  switchAuthMode(mode);
+}
+function closeAuthModal() {
+  document.getElementById('auth-modal').style.display = 'none';
+}
+function switchAuthMode(mode) {
+  const isSignIn = mode === 'signin';
+  document.getElementById('atab-btn-signin').classList.toggle('active', isSignIn);
+  document.getElementById('atab-btn-signup').classList.toggle('active', !isSignIn);
+  document.getElementById('signin-form').style.display = isSignIn ? 'block' : 'none';
+  document.getElementById('signup-form').style.display = !isSignIn ? 'block' : 'none';
+}
+
+// Token Storage
+function getAuthToken() {
+  return localStorage.getItem('levelup_token') || getCookie('token') || '';
+}
+function setAuthToken(token) {
+  localStorage.setItem('levelup_token', token);
+  document.cookie = `token=${token}; path=/; max-age=${86400 * 15}; SameSite=Lax`;
+}
+function removeAuthToken() {
+  localStorage.removeItem('levelup_token');
+  document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+}
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? match[2] : null;
+}
+
+// Auth API Calls
+async function submitSignIn(e) {
+  e.preventDefault();
+  const u = document.getElementById('signin-username').value.trim();
+  const p = document.getElementById('signin-password').value.trim();
+  const btn = document.getElementById('btn-signin-text');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      setAuthToken(data.user.token);
+      currentUser = data.user;
+      showToast('Welcome back, ' + currentUser.username + '!', 'success');
+      closeAuthModal();
+      updateAuthUI();
+      fetchStats();
+    } else {
+      showToast(data.error || 'Login failed', 'error');
+    }
+  } catch (err) {
+    showToast('Network error: ' + err.message, 'error');
+  } finally {
+    btn.innerHTML = 'Sign In →';
+  }
+}
+
+async function submitSignUp(e) {
+  e.preventDefault();
+  const u = document.getElementById('signup-username').value.trim();
+  const p = document.getElementById('signup-password').value.trim();
+  const tg = document.getElementById('signup-telegram').value.trim();
+  const btn = document.getElementById('btn-signup-text');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...';
+
+  try {
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p, telegram: tg })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      setAuthToken(data.user.token);
+      currentUser = data.user;
+      showToast('Account created successfully!', 'success');
+      closeAuthModal();
+      updateAuthUI();
+      fetchStats();
+    } else {
+      showToast(data.error || 'Registration failed', 'error');
+    }
+  } catch (err) {
+    showToast('Network error: ' + err.message, 'error');
+  } finally {
+    btn.innerHTML = 'Create Account →';
+  }
+}
+
+async function handleLogout() {
+  try {
+    await fetch('/api/auth/logout', { method: 'POST' });
+  } catch (e) {}
+  removeAuthToken();
+  currentUser = null;
+  showToast('Logged out cleanly.', 'info');
+  updateAuthUI();
+  openAuthModal('signin');
+}
+
+async function checkAuthStatus() {
+  const token = getAuthToken();
+  if (!token) {
+    openAuthModal('signin');
+    return;
+  }
+  try {
+    const res = await fetch('/api/auth/me', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      currentUser = data.user;
+      updateAuthUI();
+      fetchStats();
+    } else {
+      removeAuthToken();
+      openAuthModal('signin');
+    }
+  } catch (err) {
+    console.error("Auth check error:", err);
+  }
+}
+
+function updateAuthUI() {
+  const isLoggedIn = !!currentUser;
+  const isAdmin = currentUser && currentUser.role === 'admin';
+
+  document.getElementById('header-login-btn').style.display = isLoggedIn ? 'none' : 'inline-flex';
+  document.getElementById('header-logout-btn').style.display = isLoggedIn ? 'inline-flex' : 'none';
+  document.getElementById('user-pill-container').style.display = isLoggedIn ? 'inline-flex' : 'none';
+
+  // Admin button in header and navs
+  document.getElementById('header-admin-btn').style.display = isAdmin ? 'inline-flex' : 'none';
+  document.getElementById('dtab-admin').style.display = isAdmin ? 'inline-flex' : 'none';
+  document.getElementById('bnav-admin').style.display = isAdmin ? 'flex' : 'none';
+
+  if (isLoggedIn) {
+    document.getElementById('user-pill-name').innerText = currentUser.username;
+    document.getElementById('user-pill-avatar').innerText = currentUser.username.charAt(0).toUpperCase();
+    const planTag = document.getElementById('user-pill-plan');
+    if (isAdmin) {
+      planTag.innerText = 'Admin';
+      planTag.className = 'plan-tag admin';
+    } else {
+      planTag.innerText = currentUser.plan || 'Free';
+      planTag.className = 'plan-tag';
+    }
+  }
+}
+
+// ==================== PLAN TIME COUNTDOWN TICKER ====================
+let planCountdownInterval = null;
+let remainingPlanSeconds = 0;
+
+function updateRemainingTimeDisplay(secs, isAdmin, isExpired, planName) {
+  remainingPlanSeconds = typeof secs === 'number' ? secs : 0;
+  if (planCountdownInterval) {
+    clearInterval(planCountdownInterval);
+    planCountdownInterval = null;
+  }
+  const heroPill = document.getElementById('hero-remaining-time-pill');
+  const heroText = document.getElementById('hero-remaining-time-text');
+  const statBox = document.getElementById('stat-remaining-plan-time');
+
+  if (isAdmin) {
+    if (heroPill) heroPill.className = 'hero-plan-time-pill admin';
+    if (heroText) heroText.innerHTML = '<i class="fa-solid fa-infinity"></i> Unlimited (Admin Lifetime)';
+    if (statBox) statBox.innerText = 'Lifetime (Admin)';
+    return;
+  }
+  if (isExpired || remainingPlanSeconds <= 0) {
+    if (heroPill) heroPill.className = 'hero-plan-time-pill expired';
+    if (heroText) heroText.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Plan Expired';
+    if (statBox) statBox.innerText = 'Expired';
+    return;
+  }
+
+  if (heroPill) heroPill.className = 'hero-plan-time-pill';
+
+  function tick() {
+    if (remainingPlanSeconds <= 0) {
+      if (planCountdownInterval) clearInterval(planCountdownInterval);
+      if (heroPill) heroPill.className = 'hero-plan-time-pill expired';
+      if (heroText) heroText.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Plan Expired';
+      if (statBox) statBox.innerText = 'Expired';
+      return;
+    }
+    const rem = remainingPlanSeconds;
+    const days = Math.floor(rem / 86400);
+    const hours = Math.floor((rem % 86400) / 3600);
+    const mins = Math.floor((rem % 3600) / 60);
+    const s = rem % 60;
+    const formatted = days > 0
+      ? `${days}d ${hours}h ${mins}m ${s}s`
+      : `${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+    if (heroText) heroText.innerHTML = `<i class="fa-solid fa-hourglass-half"></i> Remaining Time: ${formatted}`;
+    if (statBox) statBox.innerText = formatted;
+    remainingPlanSeconds--;
+  }
+
+  tick();
+  planCountdownInterval = setInterval(tick, 1000);
+}
+
+// ==================== STATS & DASHBOARD ====================
+async function fetchStats() {
+  const token = getAuthToken();
+  const headers = {};
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+
+  try {
+    const res = await fetch('/api/stats', { headers });
+    if (res.status === 401) {
+      openAuthModal('signin');
+      return;
+    }
+    const data = await res.json();
+    botStatsData = data;
+
+    // Update Hero banner
+    const isAdmin = !!data.is_admin;
+    const availSlots = data.available_slots !== undefined ? data.available_slots : 0;
+    const userSlots = data.user_slots !== undefined ? data.user_slots : 0;
+    const planDisplay = data.plan_name || currentUser?.plan || 'Free Tier';
+
+    if (isAdmin) {
+      document.getElementById('hero-available-slots').innerText = '∞';
+      document.getElementById('hero-plan-name').innerText = `Active Plan: ${planDisplay} (Unlimited Slots)`;
+      document.getElementById('stat-slots-count').innerText = 'Unlimited';
+    } else if (userSlots <= 0 || data.plan_expired) {
+      document.getElementById('hero-available-slots').innerText = '0';
+      document.getElementById('hero-plan-name').innerText = `Active Plan: ${planDisplay} (0 Slots Available - Buy Plan to Start)`;
+      document.getElementById('stat-slots-count').innerText = '0 / 0';
+    } else {
+      document.getElementById('hero-available-slots').innerText = availSlots;
+      document.getElementById('hero-plan-name').innerText = `Active Plan: ${planDisplay} (${availSlots} / ${userSlots} Slots Available)`;
+      document.getElementById('stat-slots-count').innerText = `${availSlots} / ${userSlots}`;
+    }
+
+    // Update Live Countdown Timer
+    updateRemainingTimeDisplay(data.remaining_seconds, data.is_admin, data.plan_expired, planDisplay);
+
+    // Update 6 Stat Boxes (Isolated to this user)
+    document.getElementById('stat-active-accounts').innerText = data.active_accounts !== undefined ? data.active_accounts : data.total_accounts || 0;
+    document.getElementById('stat-matches-started').innerText = data.matches_started || 0;
+    document.getElementById('stat-matches-done').innerText = data.matches_done || data.total_matches || 0;
+    document.getElementById('stat-total-exp').innerText = '+' + (data.total_gained_exp || 0).toLocaleString();
+    document.getElementById('accounts-count-badge').innerText = data.total_accounts || 0;
+
+    // Render Account Cards
+    renderAccountCards(data.accounts || []);
+
+    // Render Logs
+    renderLogs(data.logs || []);
+
+  } catch (err) {
+    console.error("fetchStats failed:", err);
+  }
+}
+
+function renderAccountCards(accounts) {
+  const container = document.getElementById('account-cards-container');
+  if (!accounts || accounts.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state-box">
+        <i class="fa-solid fa-ghost empty-state-icon"></i>
+        <h3>No Connected Accounts</h3>
+        <p>You have not added any FreeFire bot accounts yet. Click below to add an account and begin automatic leveling!</p>
+        <button class="btn-cyber-primary" onclick="openAddAccountModal()">
+          <i class="fa-solid fa-plus"></i> Add Account Now
+        </button>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = accounts.map(acc => {
+    const isMatch = acc.status === 'IN_MATCH';
+    const statusClass = isMatch ? 'status-match' : 'status-online';
+    const statusText = isMatch ? `In Match (${acc.active_matches || 1})` : (acc.status || 'ONLINE');
+    const gained = acc.gained_exp || 0;
+    const initial = (acc.nickname || 'P').trim().charAt(0).toUpperCase();
+    const pct = Math.min(100, Math.max(10, ((acc.current_exp || 0) % 1000) / 10));
+
+    const displayUid = acc.display_uid || acc.uid;
+    const matchesDone = acc.matches_played || 0;
+    const matchesStarted = acc.matches_started || matchesDone;
+    const matchesLabel = matchesStarted > matchesDone ? `Matches: ${matchesDone} (${matchesStarted} started)` : `Matches: ${matchesDone}`;
+
+    return `
+      <div class="account-card">
+        <div class="card-top-badges">
+          <div class="pill-group">
+            <span class="badge-pill"><i class="fa-solid fa-globe"></i> ${escapeHtml(acc.region || 'IND')}</span>
+            <span class="badge-pill"><i class="fa-solid fa-crosshairs"></i> ${escapeHtml(acc.mode || 'AUTO')}</span>
+            <span class="badge-pill"><i class="fa-solid fa-id-card"></i> ${escapeHtml(displayUid)}</span>
+          </div>
+          <div class="badge-pill ${statusClass}">
+            <span class="pulse-indicator"></span>
+            <span>${escapeHtml(statusText)}</span>
+          </div>
+        </div>
+
+        <div class="player-main-row">
+          <div class="player-avatar-box">${escapeHtml(initial)}</div>
+          <div class="player-info-meta">
+            <div class="player-nickname-row">
+              <span class="player-name">${escapeHtml(acc.nickname || 'Player')}</span>
+              <span class="player-lvl-pill">Lv. ${acc.level || 1}</span>
+            </div>
+            <div class="player-uid-sub">
+              <span>UID: ${escapeHtml(displayUid)}</span>
+              <button class="copy-uid-btn" onclick="copyToClipboard('${displayUid}')" title="Copy UID">
+                <i class="fa-solid fa-copy"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="level-progress-wrapper">
+          <div class="progress-meta-labels">
+            <span style="color:var(--accent-cyan); font-weight:700;">Level ${acc.level || 1}</span>
+            <span>${escapeHtml(matchesLabel)}</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-bar-fill" style="width:${pct}%"></div>
+          </div>
+        </div>
+
+        <div class="exp-stats-box">
+          <div class="exp-col">
+            <div class="exp-col-title">INITIAL EXP</div>
+            <div class="exp-col-val">${(acc.initial_exp || 0).toLocaleString()}</div>
+          </div>
+          <div class="exp-col">
+            <div class="exp-col-title">CURRENT EXP</div>
+            <div class="exp-col-val">${(acc.current_exp || 0).toLocaleString()}</div>
+          </div>
+          <div class="exp-col">
+            <div class="exp-col-title">EXP GAINED</div>
+            <div class="exp-col-val gain">+${gained.toLocaleString()}</div>
+          </div>
+        </div>
+
+        <div class="card-bottom-actions">
+          <div class="last-updated-text">Updated: ${acc.last_updated || 'Active'}</div>
+          <div class="card-btn-group">
+            <button class="btn-card-action" onclick="refreshAccount('${displayUid}')">
+              <i class="fa-solid fa-rotate"></i> REFRESH
+            </button>
+            <button class="btn-card-action danger" onclick="confirmDeleteAccount('${displayUid}')">
+              <i class="fa-solid fa-trash"></i> DELETE
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+let currentLogCategory = 'all';
+let allRawLogs = [];
+
+function setLogCategoryFilter(category) {
+  currentLogCategory = category;
+  document.getElementById('log-filter-all')?.classList.toggle('active', category === 'all');
+  document.getElementById('log-filter-matches')?.classList.toggle('active', category === 'matches');
+  document.getElementById('log-filter-exp')?.classList.toggle('active', category === 'exp');
+  document.getElementById('log-filter-accounts')?.classList.toggle('active', category === 'accounts');
+  renderFilteredLogs();
+}
+
+function clearConsoleFeed() {
+  const feed = document.getElementById('console-logs-feed');
+  if (feed) feed.innerHTML = '<div class="log-row"><span class="log-time">[Console]</span> <span class="log-msg info">Logs view cleared. New live logs will appear below.</span></div>';
+}
+
+function renderLogs(logs) {
+  if (!logs) return;
+  allRawLogs = logs;
+  
+  // Count categories
+  let countMatches = 0;
+  let countExp = 0;
+  let countAccounts = 0;
+
+  for (const l of logs) {
+    const cat = (l.category || '').toLowerCase();
+    const msg = (l.message || '').toLowerCase();
+    if (cat === 'matches' || msg.includes('match') || msg.includes('udp') || msg.includes('lone wolf') || msg.includes('battle royale') || msg.includes('searching')) {
+      countMatches++;
+    } else if (cat === 'exp' || msg.includes('exp') || msg.includes('level') || msg.includes('like')) {
+      countExp++;
+    } else if (cat === 'accounts' || msg.includes('account') || msg.includes('login') || msg.includes('cache') || msg.includes('purged') || msg.includes('removed') || msg.includes('delete') || msg.includes('gateway') || msg.includes('limit reached')) {
+      countAccounts++;
+    }
+  }
+
+  const cAll = document.getElementById('log-count-all');
+  if (cAll) cAll.innerText = logs.length;
+  const cM = document.getElementById('log-count-matches');
+  if (cM) cM.innerText = countMatches;
+  const cE = document.getElementById('log-count-exp');
+  if (cE) cE.innerText = countExp;
+  const cA = document.getElementById('log-count-accounts');
+  if (cA) cA.innerText = countAccounts;
+
+  renderFilteredLogs();
+}
+
+function renderFilteredLogs() {
+  const feed = document.getElementById('console-logs-feed');
+  if (!feed) return;
+  if (!allRawLogs || allRawLogs.length === 0) {
+    feed.innerHTML = '<div class="log-row"><span class="log-time">[System]</span> <span class="log-msg info">No logs recorded yet.</span></div>';
+    return;
+  }
+
+  const filtered = allRawLogs.filter(l => {
+    if (currentLogCategory === 'all') return true;
+    const cat = (l.category || '').toLowerCase();
+    const msg = (l.message || '').toLowerCase();
+    if (currentLogCategory === 'matches') {
+      return cat === 'matches' || msg.includes('match') || msg.includes('udp') || msg.includes('lone wolf') || msg.includes('battle royale') || msg.includes('searching');
+    }
+    if (currentLogCategory === 'exp') {
+      return cat === 'exp' || msg.includes('exp') || msg.includes('level') || msg.includes('like');
+    }
+    if (currentLogCategory === 'accounts') {
+      return cat === 'accounts' || msg.includes('account') || msg.includes('login') || msg.includes('cache') || msg.includes('purged') || msg.includes('removed') || msg.includes('delete') || msg.includes('device') || msg.includes('gateway') || msg.includes('limit reached');
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    feed.innerHTML = `<div class="log-row"><span class="log-time">[Filter]</span> <span class="log-msg info">No ${escapeHtml(currentLogCategory)} logs recorded yet.</span></div>`;
+    return;
+  }
+
+  feed.innerHTML = filtered.map(l => {
+    let catTag = '';
+    const cat = (l.category || '').toLowerCase();
+    const msg = (l.message || '').toLowerCase();
+    if (cat === 'matches' || msg.includes('match') || msg.includes('udp')) {
+      catTag = '<span style="color:var(--accent-green); font-size:10px; margin-right:4px; font-weight:700;">[MATCH]</span>';
+    } else if (cat === 'exp' || msg.includes('exp') || msg.includes('level')) {
+      catTag = '<span style="color:var(--accent-cyan); font-size:10px; margin-right:4px; font-weight:700;">[EXP]</span>';
+    } else if (cat === 'accounts' || msg.includes('account') || msg.includes('purged') || msg.includes('removed')) {
+      catTag = '<span style="color:var(--accent-purple); font-size:10px; margin-right:4px; font-weight:700;">[ACC]</span>';
+    }
+
+    return `
+      <div class="log-row">
+        <span class="log-time">[${escapeHtml(l.time)}]</span>
+        ${catTag}
+        <span class="log-msg ${escapeHtml(l.level || 'info')}">${escapeHtml(l.message)}</span>
+      </div>
+    `;
+  }).join('');
+  feed.scrollTop = feed.scrollHeight;
+}
+
+// Account Actions
+function openAddAccountModal() {
+  if (!currentUser) {
+    openAuthModal('signin');
+    return;
+  }
+  if (botStatsData && !botStatsData.is_admin) {
+    if (botStatsData.plan_expired) {
+      showToast('Your subscription plan has expired! Please renew or purchase a plan in the Buy Plan tab to add accounts.', 'warning');
+      switchTab('buy');
+      return;
+    }
+    if (botStatsData.available_slots <= 0) {
+      showToast('All your account slots are used! Please upgrade your plan in the Buy Plan tab to unlock more slots.', 'warning');
+      switchTab('buy');
+      return;
+    }
+  }
+  openModal('add-account-modal');
+}
+
+function switchAccType(type) {
+  currentAccType = type;
+  document.getElementById('acc-tab-guest').classList.toggle('active', type === 'guest');
+  document.getElementById('acc-tab-token').classList.toggle('active', type === 'token');
+  document.getElementById('acc-fields-guest').style.display = type === 'guest' ? 'block' : 'none';
+  document.getElementById('acc-fields-token').style.display = type === 'token' ? 'block' : 'none';
+}
+
+async function submitAddAccount(e) {
+  e.preventDefault();
+  const token = getAuthToken();
+  const region = document.getElementById('acc-input-region').value;
+  const mode = document.getElementById('acc-input-mode') ? document.getElementById('acc-input-mode').value : 'AUTO';
+  let payload = { region, mode };
+
+  if (currentAccType === 'guest') {
+    const uid = document.getElementById('acc-input-uid').value.trim();
+    const pwd = document.getElementById('acc-input-pwd').value.trim();
+    if (!uid || !pwd) {
+      showToast('Please enter both UID and Guest Password', 'warning');
+      return;
+    }
+    payload.uid = uid;
+    payload.password = pwd;
+  } else {
+    const tok = document.getElementById('acc-input-token').value.trim();
+    if (!tok) {
+      showToast('Please paste the authentication token', 'warning');
+      return;
+    }
+    payload.token = tok;
+  }
+
+  try {
+    const res = await fetch('/api/account/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      showToast(data.message || 'Account connected!', 'success');
+      closeModal('add-account-modal');
+      fetchStats();
+    } else {
+      showToast(data.error || 'Failed to add account', 'error');
+    }
+  } catch (err) {
+    showToast('Network error: ' + err.message, 'error');
+  }
+}
+
+async function refreshAccount(uid) {
+  const token = getAuthToken();
+  try {
+    showToast(`Refreshing account ${uid}...`, 'info');
+    await fetch('/api/account/refresh', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ uid })
+    });
+    setTimeout(fetchStats, 1000);
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function confirmDeleteAccount(uid) {
+  if (!confirm(`Are you sure you want to stop and delete bot account ${uid}?`)) return;
+  const token = getAuthToken();
+  try {
+    const res = await fetch('/api/account/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ uid })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      showToast(`Account ${uid} deleted cleanly.`, 'success');
+      fetchStats();
+    } else {
+      showToast(data.error || 'Delete failed', 'error');
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+// ==================== BUY PLANS & CHECKOUT ====================
+async function loadPlans() {
+  try {
+    const res = await fetch('/api/plans?_t=' + Date.now(), { cache: 'no-store' });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      allPlans = data.plans || [];
+      renderPlans();
+      // If user has checkout modal currently open, live update the displayed price!
+      if (activeCheckoutPlan) {
+        const fresh = allPlans.find(p => p.id === activeCheckoutPlan.id);
+        if (fresh) {
+          activeCheckoutPlan = fresh;
+          updateCheckoutModalPlanInfo();
+        }
+      }
+    }
+  } catch (err) {
+    console.error("Load plans error:", err);
+  }
+}
+
+function setCurrency(curr) {
+  currentCurrency = curr;
+  document.getElementById('curr-inr').classList.toggle('active', curr === 'INR');
+  document.getElementById('curr-usd').classList.toggle('active', curr === 'USD');
+  renderPlans();
+}
+
+function renderPlans() {
+  const container = document.getElementById('plans-container');
+  if (!allPlans || allPlans.length === 0) {
+    container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">No plans available.</p>';
+    return;
+  }
+
+  container.innerHTML = allPlans.map(plan => {
+    const isPopular = plan.popular;
+    const price = currentCurrency === 'INR' ? `₹ ${plan.price_inr}` : `$ ${plan.price_usd.toFixed(2)}`;
+    const altPrice = currentCurrency === 'INR' ? `$ ${plan.price_usd.toFixed(2)}` : `₹ ${plan.price_inr}`;
+    const badgeText = plan.badge || (isPopular ? 'Most Popular' : '');
+
+    return `
+      <div class="plan-card ${isPopular ? 'popular' : ''}">
+        ${badgeText ? `<div class="plan-badge-float">${escapeHtml(badgeText)}</div>` : ''}
+        
+        <div>
+          <div class="plan-icon-bolt"><i class="fa-solid fa-bolt"></i></div>
+          <div class="plan-title-box">
+            <h3>${escapeHtml(plan.name)}</h3>
+            <p>Full access for ${escapeHtml(plan.duration_text)}</p>
+          </div>
+
+          <div class="plan-pricing-box">
+            <div class="plan-price-main">${price}</div>
+            <div class="plan-price-secondary">${altPrice}</div>
+          </div>
+
+          <ul class="plan-features-list">
+            ${(plan.features || []).map(f => `<li><i class="fa-solid fa-circle-check"></i> <span>${escapeHtml(f)}</span></li>`).join('')}
+          </ul>
+        </div>
+
+        <button class="btn-buy-plan" onclick="startPlanCheckout('${plan.id}')">
+          <span>Buy Now</span> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+let currentCheckoutMethod = 'INR';
+let currentFamPayOrderId = null;
+
+function updateCheckoutModalPlanInfo() {
+  if (!activeCheckoutPlan) return;
+  const isUsd = (currentCheckoutMethod === 'USD');
+  const nameEl = document.getElementById('checkout-plan-name');
+  const priceEl = document.getElementById('checkout-plan-price');
+  const detailsEl = document.getElementById('checkout-plan-details');
+  const binanceAmt = document.getElementById('checkout-binance-amount');
+
+  if (nameEl) nameEl.innerText = activeCheckoutPlan.name;
+  if (detailsEl) detailsEl.innerText = `${activeCheckoutPlan.slots} Concurrent Accounts • ${activeCheckoutPlan.duration_text}`;
+  if (priceEl) {
+    priceEl.innerText = isUsd ? `$${activeCheckoutPlan.price_usd}` : `₹${activeCheckoutPlan.price_inr}`;
+    priceEl.style.color = isUsd ? '#f0b90b' : 'var(--accent-cyan)';
+  }
+  if (binanceAmt) binanceAmt.innerText = `$${activeCheckoutPlan.price_usd} USDT`;
+}
+
+function setCheckoutMethod(method) {
+  currentCheckoutMethod = method;
+  const isUsd = (method === 'USD');
+  
+  const btnInr = document.getElementById('chk-btn-inr');
+  const btnUsd = document.getElementById('chk-btn-usd');
+  if (btnInr) btnInr.classList.toggle('active', !isUsd);
+  if (btnUsd) btnUsd.classList.toggle('active', isUsd);
+
+  const upiSec = document.getElementById('checkout-method-upi');
+  const binanceSec = document.getElementById('checkout-method-binance');
+  if (upiSec) upiSec.style.display = isUsd ? 'none' : 'block';
+  if (binanceSec) binanceSec.style.display = isUsd ? 'block' : 'none';
+
+  updateCheckoutModalPlanInfo();
+
+  const txnLabel = document.getElementById('order-txn-label');
+  const txnInput = document.getElementById('order-txn-id');
+  const submitBtn = document.getElementById('btn-submit-order');
+
+  if (txnLabel && txnInput) {
+    if (isUsd) {
+      txnLabel.innerHTML = '<i class="fa-brands fa-bitcoin" style="color:#f0b90b;"></i> Binance Order ID / Pay ID / TxID *';
+      txnInput.placeholder = 'e.g. 2381947291 or TxHash from Binance';
+    } else {
+      txnLabel.innerHTML = '<i class="fa-solid fa-receipt"></i> 12-Digit UPI UTR / Ref No. *';
+      txnInput.placeholder = 'e.g. 412389471928 (from payment receipt)';
+    }
+  }
+
+  if (submitBtn) {
+    submitBtn.innerHTML = isUsd
+      ? '<i class="fa-solid fa-check"></i> Submit for Verification'
+      : '<i class="fa-solid fa-bolt"></i> Verify &amp; Activate Plan Instantly';
+  }
+
+  if (!isUsd && activeCheckoutPlan && !currentFamPayOrderId) {
+    loadFamPayDynamicQR(activeCheckoutPlan.id);
+  }
+}
+
+async function loadFamPayDynamicQR(planId) {
+  const qrImg = document.getElementById('checkout-qr-img');
+  const qrLoading = document.getElementById('checkout-qr-loading');
+  const orderBadge = document.getElementById('checkout-order-id-badge');
+
+  if (qrLoading) {
+    qrLoading.style.display = 'flex';
+    qrLoading.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin" style="font-size:24px;"></i><span>Generating Dynamic FamPay QR...</span>';
+  }
+  if (qrImg) qrImg.style.opacity = '0.2';
+  if (orderBadge) orderBadge.innerText = 'Creating Order...';
+
+  try {
+    const res = await fetch('/api/payment/generate-qr', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getAuthToken()}`
+      },
+      body: JSON.stringify({ plan_id: planId })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      currentFamPayOrderId = data.order_id;
+      if (orderBadge) orderBadge.innerText = 'Order: ' + data.order_id;
+      if (qrImg) {
+        qrImg.onload = () => {
+          qrImg.style.opacity = '1';
+          if (qrLoading) qrLoading.style.display = 'none';
+        };
+        qrImg.onerror = () => {
+          if (qrLoading) {
+            qrLoading.innerHTML = '<span style="color:var(--accent-red); font-size:12px;">Failed to stream QR. Click retry.</span>';
+          }
+        };
+        qrImg.src = data.qr_url + '&t=' + Date.now();
+      }
+    } else {
+      if (qrLoading) {
+        qrLoading.innerHTML = `<span style="color:var(--accent-red); font-size:12px; padding:0 10px; text-align:center;">${escapeHtml(data.error || 'Gateway unavailable')}</span>`;
+      }
+    }
+  } catch (err) {
+    if (qrLoading) {
+      qrLoading.innerHTML = '<span style="color:var(--accent-red); font-size:12px;">Network error generating QR</span>';
+    }
+  }
+}
+
+function startPlanCheckout(planId) {
+  if (!currentUser) {
+    showToast('Please sign in first to purchase a plan.', 'warning');
+    openAuthModal('signin');
+    return;
+  }
+  const plan = allPlans.find(p => p.id === planId);
+  if (!plan) return;
+  activeCheckoutPlan = plan;
+  currentFamPayOrderId = null;
+
+  document.getElementById('checkout-plan-name').innerText = plan.name;
+  document.getElementById('checkout-plan-details').innerText = `${plan.slots} Concurrent Accounts • ${plan.duration_text}`;
+  document.getElementById('order-tg-handle').value = currentUser.telegram || '';
+  document.getElementById('order-txn-id').value = '';
+  
+  // Set method matching current currency choice
+  setCheckoutMethod(currentCurrency === 'USD' ? 'USD' : 'INR');
+  
+  openModal('checkout-modal');
+
+  if (currentCheckoutMethod !== 'USD') {
+    loadFamPayDynamicQR(plan.id);
+  }
+}
+
+function copyBinanceId() {
+  const el = document.getElementById('checkout-binance-id');
+  const bid = el ? el.innerText.trim() : '1231529920';
+  copyToClipboard(bid);
+  showToast('Binance Pay ID copied: ' + bid, 'success');
+}
+
+async function submitOrder(e) {
+  e.preventDefault();
+  const token = getAuthToken();
+  const txnId = document.getElementById('order-txn-id').value.trim();
+  const tgHandle = document.getElementById('order-tg-handle').value.trim();
+  const submitBtn = document.getElementById('btn-submit-order');
+
+  if (!txnId) {
+    showToast('Please enter your 12-digit UPI UTR number', 'warning');
+    return;
+  }
+
+  const isUsd = (currentCheckoutMethod === 'USD');
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Verifying with Gateway...';
+  }
+
+  try {
+    if (!isUsd && currentFamPayOrderId) {
+      // Automated FamPay UPI Verification
+      const res = await fetch('/api/payment/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          order_id: currentFamPayOrderId,
+          plan_id: activeCheckoutPlan.id,
+          utr: txnId,
+          user_telegram: tgHandle
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.status === 'ok' && data.verified) {
+        showToast(data.message || 'Payment verified! Plan activated instantly.', 'success');
+        closeModal('checkout-modal');
+        if (data.user) {
+          currentUser = data.user;
+          updateUserUI();
+        }
+        await refreshUserData();
+        switchTab('history');
+      } else {
+        showToast(data.error || 'UTR verification failed. Please ensure payment is completed.', 'error');
+      }
+    } else {
+      // Manual / Binance USD Order
+      const res = await fetch('/api/plans/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          plan_id: activeCheckoutPlan.id,
+          transaction_id: txnId,
+          user_telegram: tgHandle,
+          payment_method: isUsd ? 'Binance Pay' : 'UPI'
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.status === 'ok') {
+        showToast(data.message, 'success');
+        closeModal('checkout-modal');
+        switchTab('history');
+      } else {
+        showToast(data.error || 'Order submission failed', 'error');
+      }
+    }
+  } catch (err) {
+    showToast('Network error: ' + err.message, 'error');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = isUsd
+        ? '<i class="fa-solid fa-check"></i> Submit for Verification'
+        : '<i class="fa-solid fa-bolt"></i> Verify &amp; Activate Plan Instantly';
+    }
+  }
+}
+
+// ==================== HISTORY: MY ORDERS ====================
+async function loadMyOrders() {
+  const token = getAuthToken();
+  if (!token) return;
+  const container = document.getElementById('orders-list-container');
+  try {
+    const res = await fetch('/api/plans/my-orders', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      const orders = data.orders || [];
+      if (orders.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state-box">
+            <i class="fa-solid fa-receipt empty-state-icon"></i>
+            <h3>No Orders Yet</h3>
+            <p>You haven't requested any plan activations yet. Choose a plan in the Buy tab to unlock bot slots!</p>
+            <button class="btn-cyber-primary" onclick="switchTab('buy')">Browse Plans</button>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = orders.map(ord => {
+        const dateStr = new Date(ord.created_at * 1000).toLocaleString();
+        const isBinance = (ord.payment_method === 'Binance Pay');
+        return `
+          <div class="history-card">
+            <div class="hcard-left">
+              <h4>${escapeHtml(ord.plan_name)} (${isBinance ? `$${ord.price_usd}` : `₹${ord.price_inr}`})</h4>
+              <p>Order ID: ${escapeHtml(ord.id)} • Method: <b style="color:${isBinance ? '#f0b90b' : 'var(--accent-cyan)'};">${escapeHtml(ord.payment_method || 'UPI')}</b> • Txn: ${escapeHtml(ord.transaction_id)}</p>
+              <p style="font-size:10px; color:var(--text-muted); margin-top:2px;">Requested: ${dateStr}</p>
+            </div>
+            <div>
+              <span class="status-pill-order ${ord.status}">${ord.status === 'pending' ? '⏳ PENDING APPROVAL' : ord.status === 'approved' ? '✅ ACTIVE' : '❌ DECLINED'}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  } catch (err) {
+    console.error("Order load error:", err);
+  }
+}
+
+// ==================== PUBLIC SETTINGS (CONTACTS) ====================
+async function loadPublicSettings() {
+  try {
+    const res = await fetch('/api/settings/public');
+    const data = await res.json();
+    if (data.status === 'ok') {
+      const s = data.settings;
+      const upiEl = document.getElementById('checkout-upi-id');
+      if (upiEl && s.upi_id) upiEl.innerText = s.upi_id;
+      if (s.binance_id) {
+        const bIdEl = document.getElementById('checkout-binance-id');
+        if (bIdEl) bIdEl.innerText = s.binance_id;
+        const bStepEl = document.getElementById('bstep-binance-id');
+        if (bStepEl) bStepEl.innerText = s.binance_id;
+      }
+      if (s.qr_code_url && !currentFamPayOrderId) {
+        const qrEl = document.getElementById('checkout-qr-img');
+        if (qrEl && !qrEl.src) qrEl.src = s.qr_code_url;
+      }
+      if (s.telegram_channel) {
+        document.getElementById('contact-link-channel').href = s.telegram_channel;
+        document.getElementById('contact-text-channel').innerText = s.telegram_channel.replace('https://t.me/', '@');
+      }
+      if (s.telegram_group) {
+        document.getElementById('contact-link-group').href = s.telegram_group;
+        document.getElementById('contact-text-group').innerText = s.telegram_group.replace('https://t.me/', '@');
+      }
+      if (s.telegram_support) {
+        document.getElementById('contact-link-support').href = s.telegram_support;
+        document.getElementById('contact-text-support').innerText = s.telegram_support.replace('https://t.me/', '@');
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// ==================== ADMIN PANEL FUNCTIONS ====================
+async function loadAdminDashboard() {
+  const token = getAuthToken();
+  try {
+    const res = await fetch('/api/admin/overview', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      const ov = data.overview;
+      document.getElementById('admin-stat-users').innerText = ov.total_users;
+      document.getElementById('admin-stat-pending').innerText = ov.pending_orders_count;
+      document.getElementById('admin-stat-revenue').innerText = `₹${ov.total_revenue_inr.toLocaleString()}`;
+      if (document.getElementById('admin-stat-active-accounts')) {
+        document.getElementById('admin-stat-active-accounts').innerText = ov.total_active_accounts;
+      }
+      if (document.getElementById('admin-stat-matches')) {
+        document.getElementById('admin-stat-matches').innerText = ov.total_matches;
+      }
+      if (document.getElementById('admin-stat-exp')) {
+        document.getElementById('admin-stat-exp').innerText = '+' + (ov.total_gained_exp || 0).toLocaleString();
+      }
+      
+      const mongoTxt = ov.is_mongo ? '🟢 CONNECTED (MongoDB Cluster Active)' : '🟡 LOCAL JSON STORAGE (Cluster Not Linked)';
+      const statusEl = document.getElementById('admin-mongo-status-text');
+      if (statusEl) {
+        statusEl.innerHTML = mongoTxt;
+        statusEl.style.color = ov.is_mongo ? 'var(--accent-green)' : 'var(--accent-amber)';
+      }
+    }
+    loadAdminOrders();
+  } catch (err) {
+    console.error("Admin load error:", err);
+  }
+}
+
+async function loadAdminOrders() {
+  const token = getAuthToken();
+  const tbody = document.getElementById('admin-orders-table-body');
+  try {
+    const res = await fetch('/api/admin/orders', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      const orders = data.orders || [];
+      if (orders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:20px;">No orders found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = orders.map(ord => {
+        const isPending = ord.status === 'pending';
+        return `
+          <tr>
+            <td style="font-family:var(--font-mono); font-weight:700;">${escapeHtml(ord.id)}</td>
+            <td><b>${escapeHtml(ord.username)}</b></td>
+            <td>${escapeHtml(ord.plan_name)}</td>
+            <td>
+              <div>${ord.payment_method === 'Binance Pay' ? `$${ord.price_usd}` : `₹${ord.price_inr}`}</div>
+              <span style="font-size:10px; padding:1px 5px; border-radius:3px; font-weight:700; background:${ord.payment_method === 'Binance Pay' ? 'rgba(240,185,11,0.2)' : 'rgba(0,242,254,0.15)'}; color:${ord.payment_method === 'Binance Pay' ? '#f0b90b' : 'var(--accent-cyan)'};">${escapeHtml(ord.payment_method || 'UPI')}</span>
+            </td>
+            <td style="font-family:var(--font-mono);">${escapeHtml(ord.transaction_id)}</td>
+            <td>${escapeHtml(ord.user_telegram || '-')}</td>
+            <td><span class="status-pill-order ${ord.status}">${ord.status.toUpperCase()}</span></td>
+            <td>
+              ${isPending ? `
+                <div style="display:flex; gap:6px;">
+                  <button class="btn-action-small approve" onclick="handleAdminOrderAction('${ord.id}', 'approve')"><i class="fa-solid fa-check"></i> Approve</button>
+                  <button class="btn-action-small reject" onclick="handleAdminOrderAction('${ord.id}', 'reject')"><i class="fa-solid fa-xmark"></i> Reject</button>
+                </div>
+              ` : `<span style="font-size:11px; color:var(--text-muted);">${ord.admin_remarks || 'Done'}</span>`}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function handleAdminOrderAction(orderId, action) {
+  const token = getAuthToken();
+  const remarks = action === 'reject' ? prompt('Enter reason for decline (optional):', 'Invalid transaction ref') : '';
+  try {
+    const res = await fetch('/api/admin/orders/action', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ order_id: orderId, action, remarks })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      showToast(data.message, 'success');
+      loadAdminOrders();
+      loadAdminDashboard();
+    } else {
+      showToast(data.error || 'Action failed', 'error');
+    }
+  } catch (err) {
+    showToast('Network error: ' + err.message, 'error');
+  }
+}
+
+async function loadAdminUsers() {
+  const token = getAuthToken();
+  const tbody = document.getElementById('admin-users-table-body');
+  try {
+    const res = await fetch('/api/admin/users', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      const users = data.users || [];
+      if (users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:20px;">No users found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = users.map(u => {
+        const uidsList = (u.account_uids || []).map(uid => `<code style="font-size:11px; background:rgba(0,0,0,0.4); padding:2px 5px; border-radius:4px; margin-right:3px; font-family:var(--font-mono);">${escapeHtml(uid)}</code>`).join('') || '<span style="color:var(--text-muted); font-size:11px;">None</span>';
+        const isBanned = u.status === 'banned';
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:700;">${escapeHtml(u.username)}</div>
+              ${u.telegram ? `<div style="font-size:11px; color:var(--accent-cyan);">${escapeHtml(u.telegram)}</div>` : ''}
+            </td>
+            <td><span class="plan-tag ${u.role === 'admin' ? 'admin' : ''}">${u.role.toUpperCase()}</span></td>
+            <td>
+              <span style="color:${isBanned ? 'var(--accent-red)' : 'var(--accent-green)'}; font-weight:700;">
+                ${isBanned ? '⛔ BANNED' : '✅ ACTIVE'}
+              </span>
+            </td>
+            <td>
+              <div style="font-weight:600;">${escapeHtml(u.plan || 'Free Tier')}</div>
+              <div style="font-size:11px; color:var(--text-muted); font-family:var(--font-mono);">${escapeHtml(u.remaining_time_str || '-')}</div>
+            </td>
+            <td style="font-family:var(--font-mono); font-weight:700;">${u.slots_used || 0} / ${u.slots || 0}</td>
+            <td style="max-width:180px;">${uidsList}</td>
+            <td style="color:var(--accent-cyan); font-family:var(--font-mono); font-weight:700;">+${(u.total_gained_exp || 0).toLocaleString()}</td>
+            <td>
+              <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                <button class="btn-card-action" onclick="openAdminEditUserModal('${u.id}', '${escapeHtml(u.username)}', ${u.slots || 0}, '${u.role}', '${u.status}', '${escapeHtml(u.plan || '')}')" title="Edit Slots & Plan">
+                  <i class="fa-solid fa-pen-to-square"></i> Edit
+                </button>
+                <button class="btn-card-action ${isBanned ? 'success' : 'danger'}" onclick="toggleUserStatus('${u.id}', '${isBanned ? 'active' : 'banned'}')" title="${isBanned ? 'Unban User' : 'Ban User'}">
+                  <i class="fa-solid ${isBanned ? 'fa-user-check' : 'fa-ban'}"></i> ${isBanned ? 'Unban' : 'Ban'}
+                </button>
+                <button class="btn-card-action" onclick="promptResetPassword('${u.id}', '${escapeHtml(u.username)}')" title="Reset Password">
+                  <i class="fa-solid fa-key"></i> Pass
+                </button>
+                ${u.role !== 'admin' ? `
+                <button class="btn-card-action danger" onclick="confirmDeleteUser('${u.id}', '${escapeHtml(u.username)}')" title="Delete User">
+                  <i class="fa-solid fa-trash"></i>
+                </button>` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// ==================== ADMIN ACCOUNTS MONITORING ====================
+let allAdminAccounts = [];
+let adminAccountsFilter = 'all'; // 'all', 'admin', 'user'
+
+function setAdminAccountFilter(filter) {
+  adminAccountsFilter = filter;
+  document.getElementById('btn-filter-acc-all')?.classList.toggle('active', filter === 'all');
+  document.getElementById('btn-filter-acc-admin')?.classList.toggle('active', filter === 'admin');
+  document.getElementById('btn-filter-acc-user')?.classList.toggle('active', filter === 'user');
+  filterAdminAccountsTable();
+}
+
+async function loadAdminAccounts() {
+  const token = getAuthToken();
+  try {
+    const res = await fetch('/api/admin/accounts', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      allAdminAccounts = data.accounts || [];
+      const totalCount = data.total_count ?? allAdminAccounts.length;
+      const adminCount = data.admin_count ?? allAdminAccounts.filter(a => a.source === 'admin').length;
+      const userCount = data.user_count ?? allAdminAccounts.filter(a => a.source === 'user').length;
+      const jsonCount = data.json_count ?? allAdminAccounts.filter(a => a.in_accounts_json).length;
+
+      const badge = document.getElementById('admin-accounts-total-badge');
+      if (badge) badge.innerText = totalCount;
+      const cAll = document.getElementById('count-acc-all');
+      if (cAll) cAll.innerText = totalCount;
+      const cAdmin = document.getElementById('count-acc-admin');
+      if (cAdmin) cAdmin.innerText = adminCount;
+      const cUser = document.getElementById('count-acc-user');
+      if (cUser) cUser.innerText = userCount;
+      const cJson = document.getElementById('count-acc-json');
+      if (cJson) cJson.innerText = jsonCount;
+
+      filterAdminAccountsTable();
+    }
+  } catch (err) {
+    console.error("Admin accounts load error:", err);
+  }
+}
+
+function filterAdminAccountsTable() {
+  const q = (document.getElementById('admin-accounts-search')?.value || '').toLowerCase().trim();
+  let filtered = allAdminAccounts;
+  if (adminAccountsFilter === 'admin') {
+    filtered = filtered.filter(a => a.source === 'admin');
+  } else if (adminAccountsFilter === 'user') {
+    filtered = filtered.filter(a => a.source === 'user');
+  }
+
+  if (q) {
+    filtered = filtered.filter(a =>
+      (a.uid || '').toLowerCase().includes(q) ||
+      (a.nickname || '').toLowerCase().includes(q) ||
+      (a.owner_username || '').toLowerCase().includes(q) ||
+      (a.region || '').toLowerCase().includes(q)
+    );
+  }
+  renderAdminAccountsTable(filtered);
+}
+
+function renderAdminAccountsTable(accounts) {
+  const tbody = document.getElementById('admin-accounts-table-body');
+  if (!accounts || accounts.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:24px;">No accounts found for selected filter.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = accounts.map(acc => {
+    const isMatch = acc.status === 'IN_MATCH';
+    const statusClass = isMatch ? 'status-match' : (acc.status === 'ONLINE' ? 'status-online' : '');
+    const isAdminAcc = acc.source === 'admin';
+    const sourceBadge = isAdminAcc 
+      ? `<span class="badge-pill" style="background:rgba(127,0,255,0.2); border-color:var(--accent-purple); color:#d8b4fe; font-size:10.5px;"><i class="fa-solid fa-shield-halved"></i> Admin Added</span>`
+      : `<span class="badge-pill" style="background:rgba(0,242,254,0.15); border-color:var(--accent-cyan); color:var(--accent-cyan); font-size:10.5px;"><i class="fa-solid fa-user"></i> User Added</span>`;
+    
+    const fileBadge = acc.in_accounts_json 
+      ? `<span title="Stored in accounts.json" style="display:inline-block; font-size:10px; color:var(--accent-green); margin-top:2px;"><i class="fa-solid fa-circle-check"></i> accounts.json</span>`
+      : `<span title="Token cache / memory session" style="display:inline-block; font-size:10px; color:var(--text-muted); margin-top:2px;"><i class="fa-regular fa-clock"></i> cache</span>`;
+
+    return `
+      <tr>
+        <td style="font-family:var(--font-mono); font-weight:700;">
+          ${escapeHtml(acc.uid)}
+          <button class="copy-uid-btn" onclick="copyToClipboard('${acc.uid}')" title="Copy UID"><i class="fa-solid fa-copy"></i></button>
+          <div>${fileBadge}</div>
+        </td>
+        <td><b>${escapeHtml(acc.nickname || 'Player')}</b></td>
+        <td>
+          <div style="margin-bottom:3px;">${sourceBadge}</div>
+          <div style="font-weight:700; color:var(--text-primary); font-size:12px;">${escapeHtml(acc.owner_username || 'Unknown')}</div>
+          ${acc.owner_telegram ? `<div style="font-size:11px; color:var(--text-muted);">${escapeHtml(acc.owner_telegram)}</div>` : ''}
+        </td>
+        <td><span class="badge-pill" style="font-size:11px;"><i class="fa-solid fa-globe"></i> ${escapeHtml(acc.region || 'BD')}</span></td>
+        <td>
+          <div>Lv. ${acc.level || 1}</div>
+          <div style="font-size:11px; color:var(--accent-cyan); font-family:var(--font-mono);">+${(acc.gained_exp || 0).toLocaleString()} EXP</div>
+        </td>
+        <td style="font-family:var(--font-mono);">${acc.matches_played || 0}</td>
+        <td>
+          <span class="badge-pill ${statusClass}" style="font-size:11px;">
+            <span class="pulse-indicator"></span>
+            ${escapeHtml(acc.status || 'ONLINE')}
+          </span>
+        </td>
+        <td>
+          <button class="btn-card-action danger" onclick="adminDeleteAccount('${acc.uid}', '${escapeHtml(acc.owner_username || '')}')" title="Completely remove account from bot & storage">
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ==================== ADMIN PLAN PRICING & SLOTS ====================
+let adminPlansList = [];
+
+async function loadAdminPlansConfig() {
+  const token = getAuthToken();
+  const tbody = document.getElementById('admin-plans-table-body');
+  if (!tbody) return;
+  try {
+    const res = await fetch('/api/plans');
+    const data = await res.json();
+    if (data.status === 'ok') {
+      adminPlansList = data.plans || [];
+      renderAdminPlansTable(adminPlansList);
+    }
+  } catch (err) {
+    showToast('Failed to load plans: ' + err.message, 'error');
+  }
+}
+
+function renderAdminPlansTable(plans) {
+  const tbody = document.getElementById('admin-plans-table-body');
+  if (!tbody) return;
+  if (!plans || plans.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-muted); padding:20px;">No plans found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = plans.map(p => {
+    return `
+      <tr>
+        <td>
+          <div style="font-weight:700; color:#fff; font-size:13px;">${escapeHtml(p.name)}</div>
+          <div style="font-size:10.5px; color:var(--accent-cyan); font-family:var(--font-mono);">${escapeHtml(p.id)}</div>
+        </td>
+        <td>
+          <div style="display:flex; align-items:center; gap:4px;">
+            <span style="color:var(--accent-green); font-weight:700;">₹</span>
+            <input type="number" class="form-input" id="plan-inr-${p.id}" value="${p.price_inr ?? 0}" style="width:85px; padding:5px 8px; font-size:12px; font-family:var(--font-mono);">
+          </div>
+        </td>
+        <td>
+          <div style="display:flex; align-items:center; gap:4px;">
+            <span style="color:var(--accent-blue); font-weight:700;">$</span>
+            <input type="number" step="0.5" class="form-input" id="plan-usd-${p.id}" value="${p.price_usd ?? 0}" style="width:85px; padding:5px 8px; font-size:12px; font-family:var(--font-mono);">
+          </div>
+        </td>
+        <td>
+          <input type="number" min="1" max="100" class="form-input" id="plan-slots-${p.id}" value="${p.slots ?? 1}" style="width:65px; padding:5px 8px; font-size:12px; font-family:var(--font-mono);">
+        </td>
+        <td>
+          <input type="number" min="1" class="form-input" id="plan-hours-${p.id}" value="${p.duration_hours ?? 24}" style="width:80px; padding:5px 8px; font-size:12px; font-family:var(--font-mono);">
+        </td>
+        <td>
+          <input type="text" class="form-input" id="plan-dtext-${p.id}" value="${escapeHtml(p.duration_text || '')}" style="width:110px; padding:5px 8px; font-size:12px;">
+        </td>
+        <td>
+          <input type="text" class="form-input" id="plan-badge-${p.id}" value="${escapeHtml(p.badge || '')}" placeholder="Optional" style="width:90px; padding:5px 8px; font-size:12px;">
+        </td>
+        <td>
+          <button class="btn-card-action" onclick="saveAdminPlanPricing('${p.id}')" style="background:rgba(0,255,163,0.15); border-color:var(--accent-green); color:var(--accent-green);" title="Save pricing & settings">
+            <i class="fa-solid fa-floppy-disk"></i> Save
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function saveAdminPlanPricing(planId) {
+  const token = getAuthToken();
+  const inr = parseFloat(document.getElementById(`plan-inr-${planId}`)?.value || 0);
+  const usd = parseFloat(document.getElementById(`plan-usd-${planId}`)?.value || 0);
+  const slots = parseInt(document.getElementById(`plan-slots-${planId}`)?.value || 1);
+  const hours = parseInt(document.getElementById(`plan-hours-${planId}`)?.value || 24);
+  const dtext = document.getElementById(`plan-dtext-${planId}`)?.value?.trim() || '';
+  const badge = document.getElementById(`plan-badge-${planId}`)?.value?.trim() || '';
+
+  try {
+    const res = await fetch('/api/admin/plans/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        plan_id: planId,
+        price_inr: inr,
+        price_usd: usd,
+        slots: slots,
+        duration_hours: hours,
+        duration_text: dtext,
+        badge: badge
+      })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      showToast(`Plan '${planId}' updated successfully!`, 'success');
+      loadPlans(); // update user view
+      loadAdminPlansConfig();
+    } else {
+      showToast(data.error || 'Failed to update plan', 'error');
+    }
+  } catch (err) {
+    showToast('Network error: ' + err.message, 'error');
+  }
+}
+
+async function adminDeleteAccount(uid, owner) {
+  if (!confirm(`Are you sure you want to remove account ${uid} owned by ${owner}? This will disconnect the bot and free 1 slot for ${owner}.`)) return;
+  const token = getAuthToken();
+  try {
+    const res = await fetch('/api/account/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ uid })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      showToast(`Account ${uid} deleted successfully.`, 'success');
+      loadAdminAccounts();
+      loadAdminDashboard();
+      fetchStats();
+    } else {
+      showToast(data.error || 'Failed to delete account', 'error');
+    }
+  } catch (err) {
+    showToast('Network error: ' + err.message, 'error');
+  }
+}
+
+async function toggleUserStatus(userId, status) {
+  const token = getAuthToken();
+  try {
+    const res = await fetch('/api/admin/users/toggle-status', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ user_id: userId, status })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      showToast(data.message, 'success');
+      loadAdminUsers();
+    } else {
+      showToast(data.error || 'Failed to toggle status', 'error');
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function promptResetPassword(userId, username) {
+  const newPass = prompt(`Enter new password for user '${username}' (min 4 characters):`);
+  if (!newPass) return;
+  const token = getAuthToken();
+  try {
+    const res = await fetch('/api/admin/users/reset-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ user_id: userId, new_password: newPass })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      showToast(data.message || 'Password reset successfully!', 'success');
+    } else {
+      showToast(data.error || 'Reset failed', 'error');
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function confirmDeleteUser(userId, username) {
+  if (!confirm(`WARNING: Are you sure you want to delete user '${username}' and all of their linked accounts? This cannot be undone.`)) return;
+  const token = getAuthToken();
+  try {
+    const res = await fetch('/api/admin/users/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ user_id: userId })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      showToast(data.message || 'User deleted.', 'success');
+      loadAdminUsers();
+      loadAdminDashboard();
+    } else {
+      showToast(data.error || 'Delete failed', 'error');
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+function openAdminEditUserModal(id, username, slots, role, status, plan) {
+  document.getElementById('edit-user-id').value = id;
+  document.getElementById('edit-user-name').value = username;
+  document.getElementById('edit-user-slots').value = role === 'admin' ? 999 : (slots || 0);
+  document.getElementById('edit-user-plan').value = plan || '';
+  document.getElementById('edit-user-role').value = role;
+  document.getElementById('edit-user-status').value = status;
+  document.getElementById('edit-user-add-time').value = '0';
+  const newPassEl = document.getElementById('edit-user-newpass');
+  if (newPassEl) newPassEl.value = '';
+
+  const addTimeEl = document.getElementById('edit-user-add-time');
+  if (addTimeEl && !addTimeEl._hasSlotListener) {
+    addTimeEl._hasSlotListener = true;
+    addTimeEl.addEventListener('change', function() {
+      const val = parseInt(this.value) || 0;
+      const slotMap = { 6: 3, 24: 5, 72: 8, 168: 12, 720: 25 };
+      const nameMap = { 6: '6 Hours Sprint', 24: '24 Hours Turbo', 72: '3 Days Pro', 168: '7 Days Champion', 720: '30 Days Dominator' };
+      if (slotMap[val]) {
+        document.getElementById('edit-user-slots').value = slotMap[val];
+      }
+      if (nameMap[val]) {
+        document.getElementById('edit-user-plan').value = nameMap[val];
+      }
+    });
+  }
+
+  openModal('admin-user-modal');
+}
+
+async function submitAdminUserEdit(e) {
+  e.preventDefault();
+  const token = getAuthToken();
+  const userId = document.getElementById('edit-user-id').value;
+  const slots = document.getElementById('edit-user-slots').value;
+  const plan = document.getElementById('edit-user-plan')?.value?.trim();
+  const role = document.getElementById('edit-user-role').value;
+  const status = document.getElementById('edit-user-status').value;
+  const addHours = document.getElementById('edit-user-add-time').value;
+  const newPass = document.getElementById('edit-user-newpass')?.value?.trim();
+
+  try {
+    const res = await fetch('/api/admin/users/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        slots: parseInt(slots),
+        plan: plan || undefined,
+        role,
+        status,
+        add_hours: parseInt(addHours)
+      })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      if (newPass) {
+        await fetch('/api/admin/users/reset-password', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ user_id: userId, new_password: newPass })
+        });
+      }
+      showToast('User updated successfully!', 'success');
+      closeModal('admin-user-modal');
+      loadAdminUsers();
+      fetchStats();
+    } else {
+      showToast(data.error || 'Update failed', 'error');
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function loadAdminSettings() {
+  const token = getAuthToken();
+  try {
+    const res = await fetch('/api/admin/settings', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      const s = data.settings;
+      if (s.upi_id) document.getElementById('admin-input-upi').value = s.upi_id;
+      if (s.upi_name) document.getElementById('admin-input-upiname').value = s.upi_name;
+      if (s.binance_id) document.getElementById('admin-input-binanceid').value = s.binance_id;
+      if (s.telegram_channel) document.getElementById('admin-input-tgchannel').value = s.telegram_channel;
+      if (s.telegram_group) document.getElementById('admin-input-tggroup').value = s.telegram_group;
+      if (s.telegram_support) document.getElementById('admin-input-tgsupport').value = s.telegram_support;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function saveAdminSettings() {
+  const token = getAuthToken();
+  const payload = {
+    upi_id: document.getElementById('admin-input-upi').value.trim(),
+    upi_name: document.getElementById('admin-input-upiname').value.trim(),
+    binance_id: document.getElementById('admin-input-binanceid').value.trim(),
+    telegram_channel: document.getElementById('admin-input-tgchannel').value.trim(),
+    telegram_group: document.getElementById('admin-input-tggroup').value.trim(),
+    telegram_support: document.getElementById('admin-input-tgsupport').value.trim()
+  };
+  try {
+    const res = await fetch('/api/admin/settings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      showToast('System settings saved successfully!', 'success');
+      loadPublicSettings();
+    } else {
+      showToast(data.error || 'Save failed', 'error');
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+async function testAndSaveMongoUri() {
+  const token = getAuthToken();
+  const uri = document.getElementById('admin-input-mongo-uri').value.trim();
+  if (!uri) {
+    showToast('Please enter a MongoDB URI', 'warning');
+    return;
+  }
+  showToast('Connecting to MongoDB cluster...', 'info');
+  try {
+    const res = await fetch('/api/admin/test-mongo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ mongo_uri: uri })
+    });
+    const data = await res.json();
+    if (res.ok && data.status === 'ok') {
+      showToast(data.message, 'success');
+      loadAdminDashboard();
+    } else {
+      showToast(data.error || 'Connection failed', 'error');
+    }
+  } catch (err) {
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+
+// ==================== UTILITIES ====================
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast(`Copied to clipboard: ${text}`, 'info');
+  }).catch(() => {
+    prompt('Copy value:', text);
+  });
+}
+
+function escapeHtml(text) {
+  if (text === null || text === undefined) return '';
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Uptime Counter Live Tick
+let appUptimeSeconds = 0;
+setInterval(() => {
+  if (botStatsData && botStatsData.uptime !== undefined) {
+    appUptimeSeconds = botStatsData.uptime;
+    const h = String(Math.floor(appUptimeSeconds / 3600)).padStart(2, '0');
+    const m = String(Math.floor((appUptimeSeconds % 3600) / 60)).padStart(2, '0');
+    const s = String(appUptimeSeconds % 60).padStart(2, '0');
+    document.getElementById('stat-uptime').innerText = `${h}:${m}:${s}`;
+  }
+}, 1000);
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  checkAuthStatus();
+  fetchStats();
+  loadPublicSettings();
+  loadPlans();
+  setInterval(fetchStats, 3000);
+  setInterval(loadPlans, 10000); // Real-time sync plans modified by admin
+});
+</script>
+</body>
+</html>

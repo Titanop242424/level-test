@@ -1,0 +1,15 @@
+{
+  "MONGO_URI": "",
+  "DB_NAME": "levelup_system_db",
+  "JWT_SECRET": "super_secret_cyber_levelup_key_2026_@#!OB55",
+  "JWT_EXPIRATION_DAYS": 15,
+  "ADMIN_USERNAME": "admin",
+  "ADMIN_PASSWORD": "admin1234",
+  "WEB_PORT": 20335,
+  "WEB_HOST": "0.0.0.0",
+  "UPI_ID": "@upi",
+  "UPI_NAME": "LEVEL UP SERVICE",
+  "TELEGRAM_CHANNEL": "https://t.me/+fWms1r9krpZkNjE1",
+  "TELEGRAM_GROUP": "https://t.me/lvlgroupff",
+  "TELEGRAM_SUPPORT": "https://t.me/supprotby"
+}

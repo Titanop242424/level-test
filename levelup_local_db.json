@@ -1,0 +1,198 @@
+{
+  "users": [
+    {
+      "id": "cf72ffb8-b65c-4cda-a4be-661a1394231e",
+      "username": "admin",
+      "password_hash": "$2b$12$coGS3rrko70A61J3o8aRSeG.aZTHTq7O61bPp4B2Z5Ny/P/6YSY5e",
+      "role": "admin",
+      "slots": 999,
+      "plan": "Administrator (Infinite)",
+      "plan_expires_at": null,
+      "telegram": "@OPTITAN",
+      "status": "active",
+      "created_at": 1791007862.0861318
+    }
+  ],
+  "plans": [
+    {
+      "id": "plan_6h",
+      "name": "6 Hours Sprint",
+      "duration_hours": 6,
+      "duration_text": "6 hours",
+      "price_inr": 30,
+      "price_usd": 0.3,
+      "slots": 3,
+      "badge": "Trial",
+      "popular": false,
+      "features": [
+        "3 Concurrent Accounts",
+        "6 Hours Non-Stop Leveling",
+        "Fast Matchmaking & EXP Grinding",
+        "Anti-Ban Protection (OB55 Safe)",
+        "24/7 Bot Runtime",
+        "Telegram Support"
+      ]
+    },
+    {
+      "id": "plan_24h",
+      "name": "24 Hours Turbo",
+      "duration_hours": 24,
+      "duration_text": "24 hours (1 Day)",
+      "price_inr": 70,
+      "price_usd": 0.85,
+      "slots": 5,
+      "badge": "Popular",
+      "popular": true,
+      "features": [
+        "5 Concurrent Accounts",
+        "24 Hours Turbo Leveling",
+        "Priority Matchmaking Queue",
+        "Auto Reconnect Watchdog",
+        "Real-Time EXP Webhook",
+        "24/7 VIP Support"
+      ]
+    },
+    {
+      "id": "plan_3d",
+      "name": "3 Days Pro",
+      "duration_hours": 72,
+      "duration_text": "3 Days (72 Hours)",
+      "price_inr": 180,
+      "price_usd": 2.15,
+      "slots": 8,
+      "badge": "Value",
+      "popular": false,
+      "features": [
+        "8 Concurrent Accounts",
+        "72 Hours Continuous Grinding",
+        "Multi-Region Auto Balancing",
+        "Max EXP Yield per Match",
+        "OB55 Protocol Optimization",
+        "Dedicated Support Agent"
+      ]
+    },
+    {
+      "id": "plan_7d",
+      "name": "7 Days Champion",
+      "duration_hours": 168,
+      "duration_text": "7 Days (1 Week)",
+      "price_inr": 350,
+      "price_usd": 4.2,
+      "slots": 12,
+      "badge": "Best Seller",
+      "popular": false,
+      "features": [
+        "12 Concurrent Accounts",
+        "168 Hours Non-Stop Grinding",
+        "Fast Level 10-60 Boost",
+        "Automatic Device Randomizer",
+        "Zero Downtime Failover",
+        "Priority Telegram Hotline"
+      ]
+    },
+    {
+      "id": "plan_30d",
+      "name": "30 Days Dominator",
+      "duration_hours": 720,
+      "duration_text": "30 Days (1 Month)",
+      "price_inr": 1200,
+      "price_usd": 14.5,
+      "slots": 25,
+      "badge": "Supreme",
+      "popular": false,
+      "features": [
+        "25 Concurrent Accounts",
+        "Full Month Unlimited EXP",
+        "Dedicated Match Session Worker",
+        "Custom Device Spoofing",
+        "Instant Slot Reallocation",
+        "Personal VIP Account Manager"
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-1791009285-RO1L",
+      "user_id": "5ec4b0a9-212e-4159-b309-76f29e2f3bef",
+      "username": "testuser1",
+      "plan_id": "plan_6h",
+      "plan_name": "6 Hours Sprint",
+      "duration_hours": 6,
+      "slots": 3,
+      "price_inr": 30,
+      "price_usd": 0.3,
+      "payment_method": "UPI",
+      "transaction_id": "UTR998877665544",
+      "user_telegram": "@testuser1",
+      "status": "approved",
+      "created_at": 1791009285.770009,
+      "approved_at": 1791009285.7758822,
+      "admin_remarks": "Auto verified"
+    },
+    {
+      "id": "ORD-1791010689-O8EK",
+      "user_id": "48f9ba6d-02b9-4dd2-b373-4b879c89cc8e",
+      "username": "Titanop",
+      "plan_id": "plan_6h",
+      "plan_name": "6 Hours Sprint",
+      "duration_hours": 6,
+      "slots": 3,
+      "price_inr": 30,
+      "price_usd": 0.3,
+      "payment_method": "UPI",
+      "transaction_id": "344t5q34ty4herherahe",
+      "user_telegram": "hehberrHER",
+      "status": "approved",
+      "created_at": 1791010689.2573862,
+      "approved_at": 1791011003.743422,
+      "admin_remarks": "Approved by admin"
+    },
+    {
+      "id": "ORD-1791186631-S80N",
+      "user_id": "48f9ba6d-02b9-4dd2-b373-4b879c89cc8e",
+      "username": "Titanop",
+      "plan_id": "plan_6h",
+      "plan_name": "6 Hours Sprint",
+      "duration_hours": 6,
+      "slots": 3,
+      "price_inr": 30,
+      "price_usd": 0.3,
+      "payment_method": "UPI",
+      "transaction_id": "234234234",
+      "user_telegram": "",
+      "status": "approved",
+      "created_at": 1791186631.2542896,
+      "approved_at": 1791186678.742444,
+      "admin_remarks": "Approved by admin"
+    },
+    {
+      "id": "ORD-1791260295-VIWA",
+      "user_id": "e0d18375-b746-47f9-adb2-a3fb0e047c27",
+      "username": "test1",
+      "plan_id": "plan_6h",
+      "plan_name": "6 Hours Sprint",
+      "duration_hours": 6,
+      "slots": 3,
+      "price_inr": 30,
+      "price_usd": 0.3,
+      "payment_method": "UPI",
+      "transaction_id": "123456",
+      "user_telegram": "",
+      "status": "approved",
+      "created_at": 1791260295.1282334,
+      "approved_at": 1791260307.5213165,
+      "admin_remarks": "Approved by admin"
+    }
+  ],
+  "settings": {
+    "upi_id": "sksingh40165-1@oksbi",
+    "upi_name": "LEVEL UP SERVICE",
+    "qr_code_url": "",
+    "binance_id": "1231529920",
+    "telegram_channel": "https://t.me/+fWms1r9krpZkNjE1",
+    "telegram_group": "https://t.me/lvlgroupff",
+    "telegram_support": "https://t.me/supprotby",
+    "announcement": "Welcome to Level Up Bot! Instant activation after admin approval.",
+    "is_mongo": false
+  }
+}

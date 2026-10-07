@@ -1,0 +1,12 @@
+httpx
+google-play-scraper
+pycryptodome
+protobuf-decoder
+protobuf
+requests
+aiohttp
+pymongo
+bcrypt
+PyJWT
+dnspython
+python-dotenv
