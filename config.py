@@ -76,12 +76,12 @@ PAYMENT_MERCHANT_TYPE = get_config("PAYMENT_MERCHANT_TYPE", "fampay")
 # When a match is found and entered in game, wait this many seconds before
 # searching and entering the next match:
 # ==============================================================================
-BR_MATCH_WAIT_SECONDS = 150.0   # BR (Battle Royale) delay after match entered (180s)
-LW_MATCH_WAIT_SECONDS = 10.0    # LW (Lone Wolf) delay after match entered (15s)
+BR_MATCH_WAIT_SECONDS = 15.0   # BR (Battle Royale) delay after match entered (180s)
+LW_MATCH_WAIT_SECONDS = 3.0    # LW (Lone Wolf) delay after match entered (15s)
 
 # StartMatch queue retry interval (seconds between search requests while waiting in queue)
 BR_QUEUE_SEARCH_INTERVAL = 3.0  # BR queue retry interval (seconds)
-LW_QUEUE_SEARCH_INTERVAL = 2.0  # LW queue retry interval (seconds)
+LW_QUEUE_SEARCH_INTERVAL = 3.0  # LW queue retry interval (seconds)
 
 # Helper function to read config overrides while ignoring outdated legacy values (like 2.0s)
 def _resolve_config_float(key: str, default: float, legacy_defaults: list = None) -> float:
